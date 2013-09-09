@@ -34,6 +34,8 @@ VERHUMAN=$VER   # Human-readable version
 PKG=            # Package name (e.g. library/foo)
 SUMMARY=""      # One-liner, must be filled in
 DESC=""         # Longer description, must be filled in
+MIRROR=some.host.xxx
+DLDIR=pub/
 
 BUILD_DEPENDS_IPS=
 RUN_DEPENDS_IPS=
