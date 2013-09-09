@@ -11,9 +11,9 @@ MIRROR=sourceforge.net
 DLDIR=projects/joe-editor/files/JOE%20sources/$PROG-$VER
 
 BUILDARCH=32
-CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --prefix=/opt/oep"
+CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32"
 init
-download_source $PROG $PROG $VER
+download_source $DLDIR $PROG $VER
 patch_source
 prep_build
 build
