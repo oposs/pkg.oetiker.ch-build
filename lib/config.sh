@@ -42,7 +42,7 @@ PREFIX=/opt/oep
 #    to avoid collision on shared build systems,
 #    TMPDIR includes a username
 # DTMPDIR is used for constructing the DESTDIR path
-TMPDIR=/tmp/build_$USER
+TMPDIR=/scratch/build
 DTMPDIR=$TMPDIR
 
 # Log file for all output

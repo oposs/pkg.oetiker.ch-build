@@ -622,7 +622,7 @@ make_package() {
     fi
     echo "set name=pkg.summary value=\"$SUMMARY\"" >> $MY_MOG_FILE
     echo "set name=pkg.descr value=\"$DESCSTR\"" >> $MY_MOG_FILE
-    echo "set name=publisher value=\"sa@omniti.com\"" >> $MY_MOG_FILE
+    echo "set name=publisher value=\"contact@oetiker.ch\"" >> $MY_MOG_FILE
     if [[ -n "$RUN_DEPENDS_IPS" ]]; then
         logmsg "------ Adding dependencies"
         for i in $RUN_DEPENDS_IPS; do
