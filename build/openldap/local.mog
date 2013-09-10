@@ -23,6 +23,9 @@
 # Copyright 1995-2013 OETIKER+PARTNER AG All rights reserved.
 # Use is subject to license terms.
 #
-<transform dir path=etc/opt$ -> set group sys>
-<transform file path=etc/opt/oep/joe/.+$ -> set preserve true>
-license COPYING license=GPLv1
+<transform file path=etc/ldap/.+$ -> set preserve true>
+<transform file path=etc/ldap/.+.default$ -> set preserve false>
+<transform file path=etc/ldap/.+.default$ -> set overlay true>
+<transform file path=etc/ldap/schema/.+$ -> set preserve true>
+
+license LICENSE license=OpenLDAP

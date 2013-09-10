@@ -23,6 +23,4 @@
 # Copyright 1995-2013 OETIKER+PARTNER AG All rights reserved.
 # Use is subject to license terms.
 #
-<transform dir path=etc/opt$ -> set group sys>
-<transform file path=etc/opt/oep/joe/.+$ -> set preserve true>
-license COPYING license=GPLv1
+license COPYING license=GPLv2
