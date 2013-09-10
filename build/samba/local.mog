@@ -23,5 +23,5 @@
 # Copyright 1995-2013 OETIKER+PARTNER AG All rights reserved.
 # Use is subject to license terms.
 #
-<transform file path=etc/samba/smb.conf$ -> set preserve true>
+<transform file path=etc/samba/smb.conf$ -> set preserve renamenew>
 license ../COPYING license=GPLv3

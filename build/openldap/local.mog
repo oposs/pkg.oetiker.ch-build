@@ -24,8 +24,7 @@
 # Use is subject to license terms.
 #
 <transform file path=etc/ldap/.+$ -> set preserve true>
-<transform file path=etc/ldap/.+.default$ -> set preserve false>
-<transform file path=etc/ldap/.+.default$ -> set overlay true>
-<transform file path=etc/ldap/schema/.+$ -> set preserve true>
+<transform file path=etc/ldap/.+.default$ -> set preserve renameold>
+<transform file path=etc/ldap/schema/.+$ -> set preserve renamenew>
 
 license LICENSE license=OpenLDAP
