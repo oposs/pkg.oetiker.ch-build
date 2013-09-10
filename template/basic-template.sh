@@ -35,6 +35,7 @@ PKG=            # Package name (e.g. library/foo)
 SUMMARY=""      # One-liner, must be filled in
 DESC=""         # Longer description, must be filled in
 DOWNLOADURL="ftp://ftp.openldap.org/pub/OpenLDAP/openldap-release/openldap-2.4.36.tgz"
+BUILDARCH=32    # or 64 or both ... for libraries we want both for tools 32 bit only
 
 BUILD_DEPENDS_IPS=
 RUN_DEPENDS_IPS=
