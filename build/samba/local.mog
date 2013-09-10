@@ -24,4 +24,4 @@
 # Use is subject to license terms.
 #
 <transform file path=etc/samba/smb.conf$ -> set preserve true>
-<license ../COPYING license=GPLv3
+license ../COPYING license=GPLv3
