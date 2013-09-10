@@ -501,15 +501,20 @@ download_source() {
         # Try all possible archive names
         logmsg "--- Archive not found."
         logmsg "Downloading archive"
-        URLPREFIX=http://$MIRROR/$DLDIR/$ARCHIVEPREFIX
-        $WGET -a $LOGFILE $URLPREFIX.tar.gz || \
-            $WGET -a $LOGFILE $URLPREFIX.tar.bz2 || \
-            $WGET -a $LOGFILE $URLPREFIX.tar.xz || \
-            $WGET -a $LOGFILE $URLPREFIX.tgz || \
-            $WGET -a $LOGFILE $URLPREFIX.tbz || \
-            $WGET -a $LOGFILE $URLPREFIX.tar || \
-            $WGET -a $LOGFILE $URLPREFIX.zip || \
-            logerr "--- Failed to download file"
+        if [[ "$DOWNLOADURL" == "" ]]; then
+            URLPREFIX=http://$MIRROR/$DLDIR/$ARCHIVEPREFIX
+            $WGET -a $LOGFILE $URLPREFIX.tar.gz || \
+               $WGET -a $LOGFILE $URLPREFIX.tar.bz2 || \
+               $WGET -a $LOGFILE $URLPREFIX.tar.xz || \
+               $WGET -a $LOGFILE $URLPREFIX.tgz || \
+               $WGET -a $LOGFILE $URLPREFIX.tbz || \
+               $WGET -a $LOGFILE $URLPREFIX.tar || \
+               $WGET -a $LOGFILE $URLPREFIX.zip || \
+               logerr "--- Failed to download file"
+        else
+           $WGET -a $LOGFILE $DOWNLOADURL || \
+               logerr "--- Failed to download file"
+        fi
         find_archive $ARCHIVEPREFIX FILENAME
         if [[ "$FILENAME" == "" ]]; then
             logerr "Unable to find downloaded file."

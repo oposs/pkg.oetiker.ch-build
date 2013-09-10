@@ -21,7 +21,7 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2013 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 1995-2013 OETIKER+PARTNER AG  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
@@ -34,8 +34,7 @@ VERHUMAN=$VER   # Human-readable version
 PKG=            # Package name (e.g. library/foo)
 SUMMARY=""      # One-liner, must be filled in
 DESC=""         # Longer description, must be filled in
-MIRROR=some.host.xxx
-DLDIR=pub/
+DOWNLOADURL="ftp://ftp.openldap.org/pub/OpenLDAP/openldap-release/openldap-2.4.36.tgz"
 
 BUILD_DEPENDS_IPS=
 RUN_DEPENDS_IPS=
