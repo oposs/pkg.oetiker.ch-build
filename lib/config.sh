@@ -37,6 +37,10 @@ MIRROR=mirrors.omniti.com
 # Default prefix for packages (may be overridden)
 PREFIX=/opt/oep
 
+# some additional locations where we expect to find libraries
+LDFLAGS32="-L/opt/omni/lib -R/opt/omni/lib -L/opt/oep/lib -R/opt/oep/lib"
+LDFLAGS64="-L/opt/omni/lib/amd64 -R/opt/omni/lib/amd64 -L/opt/oep/lib/amd64 -R/opt/oep/lib/amd64"
+
 # Temporary directories
 # TMPDIR is used for source archives and build directories
 #    to avoid collision on shared build systems,

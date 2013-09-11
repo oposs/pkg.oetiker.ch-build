@@ -35,7 +35,7 @@ PKG=developer/build/pkg-config # Package name (e.g. library/foo)
 SUMMARY="helper tool used when compiling applications and libraries"      # One-liner, must be filled in
 DESC="pkg-config helps you insert the correct compiler options on the command line so an application can use gcc -o test test.cpkg-config --libs --cflags glib-2.0 for instance, rather than hard-coding values on where to find glib (or other libraries). It is language-agnostic, so it can be used for defining the location of documentation tools, for instance."         # Longer description, must be filled in
 DOWNLOADURL=http://pkgconfig.freedesktop.org/releases/pkg-config-0.28.tar.gz
-BUILDARCH=32
+BUILDARCH=both
 
 BUILD_DEPENDS_IPS="library/glib2 developer/build/libtool"
 RUN_DEPENDS_IPS=library/glib2
@@ -45,9 +45,17 @@ CONFIGURE_OPTS='GLIB_LIBS=-lglib-2.0'
 
 # alternate
 CONFIGURE_CMD=my_configure
-my_configure() {
+CF32_SAVE=$CONFIGURE_OPTS_32
+CF64_SAVE=$CONFIGURE_OPTS_64
+CONFIGURE_OPTS_32=32
+CONFIGURE_OPTS_64=64
+my_configure() {	
     logmsg "--- creating makefiles"
-    ./configure $CONFIGURE_OPTS_32 $CONFIGURE_OPTS GLIB_CFLAGS="-I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include/"
+    if [ $1 == 32 ]; then
+       ./configure $CF32_SAVE $CONFIGURE_OPTS GLIB_CFLAGS="-I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include/" --with-pc-path=/opt/oep/lib/pkgconfig:/usr/lib/pkgconfig:/opt/omni/lib/pkgconfig
+    else 
+       ./configure $CF64_SAVE $CONFIGURE_OPTS GLIB_CFLAGS="-I/usr/include/glib-2.0 -I/usr/lib/amd64/glib-2.0/include/" --with-pc-path=/opt/oep/lib/amd64/pkgconfig:/usr/lib/amd64/pkgconfig:/opt/omni/lib/amd64/pkgconfig
+    fi
 }
 
 init
