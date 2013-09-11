@@ -41,7 +41,7 @@ BUILD_DEPENDS_IPS=
 RUN_DEPENDS_IPS=
 
 # trying to get it NOT to crash on us
-CFLAGS="-g -O0"
+CFLAGS="-g"
 
 init
 download_source $PROG $PROG $VER
