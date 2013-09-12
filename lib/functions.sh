@@ -512,7 +512,7 @@ download_source() {
                $WGET -a $LOGFILE $URLPREFIX.zip || \
                logerr "--- Failed to download file"
         else
-           $WGET -a $LOGFILE $DOWNLOADURL || \
+           $WGET --no-check-certificate -a $LOGFILE $DOWNLOADURL || \
                logerr "--- Failed to download file"
         fi
         find_archive $ARCHIVEPREFIX FILENAME
