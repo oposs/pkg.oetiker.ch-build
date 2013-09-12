@@ -1,0 +1,111 @@
+diff -ru collectd-5.4.0/src/collectd-tg.c collectd-5.4.0fix//src/collectd-tg.c
+--- collectd-5.4.0/src/collectd-tg.c	Sun Aug 18 10:24:25 2013
++++ collectd-5.4.0fix//src/collectd-tg.c	Thu Sep 12 07:59:18 2013
+@@ -23,6 +23,16 @@
+ # include "config.h"
+ #endif
+ 
++/* make random work on illumos */
++#ifndef _XPG4_2
++# define _XPG4_2
++#endif
++
++/* get snprintf in illumos */
++#ifndef _XPG5
++# define _XPG5
++#endif
++
+ #ifndef _ISOC99_SOURCE
+ # define _ISOC99_SOURCE
+ #endif
+
+diff -ru collectd-5.4.0/configure collectd-5.4.0fix/configure
+--- collectd-5.4.0/configure	2013-08-18 10:25:01.622558671 +0000
++++ collectd-5.4.0fix/configure	2013-09-12 13:43:46.163592539 +0000
+@@ -18292,19 +18292,19 @@
+     have_htonll="no"
+     cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+ /* end confdefs.h.  */
+-[
++
+ #include <sys/types.h>
+ #include <netinet/in.h>
+ #if HAVE_INTTYPES_H
+ # include <inttypes.h>
+ #endif
+-]
++
+ int
+ main ()
+ {
+-[
++
+           return htonll(0);
+-]
++
+ 
+   ;
+   return 0;
+diff -ru collectd-5.4.0/configure.in collectd-5.4.0fix/configure.in
+--- collectd-5.4.0/configure.in	2013-08-18 10:24:25.049973054 +0000
++++ collectd-5.4.0fix/configure.in	2013-09-12 13:45:24.434237260 +0000
+@@ -1210,16 +1210,16 @@
+ 
+     have_htonll="no"
+     AC_LINK_IFELSE([AC_LANG_PROGRAM(
+-[[[
++[[
+ #include <sys/types.h>
+ #include <netinet/in.h>
+ #if HAVE_INTTYPES_H
+ # include <inttypes.h>
+ #endif
+-]]],
+-[[[
++]],
++[[
+           return htonll(0);
+-]]]
++]]
+     )],
+     [
+       have_htonll="yes"
+
+diff -ur collectd-5.4.0fix/src/collectdmon.c collectd-5.4.0/src/collectdmon.c
+--- collectd-5.4.0fix/src/collectdmon.c	Sun Aug 18 10:24:25 2013
++++ collectd-5.4.0/src/collectdmon.c	Thu Sep 12 14:58:16 2013
+@@ -51,7 +51,7 @@
+ #include <unistd.h>
+ 
+ #ifndef COLLECTDMON_PIDFILE
+-# define COLLECTDMON_PIDFILE LOCALSTATEDIR"/run/collectdmon.pid"
++# define COLLECTDMON_PIDFILE "/var/run/collectdmon.pid"
+ #endif /* ! COLLECTDMON_PIDFILE */
+ 
+ #ifndef WCOREDUMP
+
+diff -ur collectd-5.4.0fix//src/Makefile.in collectd-5.4.0/src/Makefile.in
+--- collectd-5.4.0fix//src/Makefile.in	Sun Aug 18 10:25:00 2013
++++ collectd-5.4.0/src/Makefile.in	Thu Sep 12 14:57:06 2013
+@@ -36,7 +36,7 @@
+ build_triplet = @build@
+ host_triplet = @host@
+ @BUILD_WITH_OWN_LIBOCONFIG_TRUE@am__append_1 = liboconfig
+-@BUILD_FEATURE_DAEMON_TRUE@am__append_2 = -DPIDFILE='"${localstatedir}/run/${PACKAGE_NAME}.pid"'
++@BUILD_FEATURE_DAEMON_TRUE@am__append_2 = -DPIDFILE='"/var/run/${PACKAGE_NAME}.pid"'
+ sbin_PROGRAMS = collectd$(EXEEXT) collectdmon$(EXEEXT)
+ bin_PROGRAMS = collectd-nagios$(EXEEXT) collectdctl$(EXEEXT) \
+ 	collectd-tg$(EXEEXT) $(am__EXEEXT_1)
+
+diff -ru collectd-5.4.0/src/collectd.c collectd-5.4.0fix/src/collectd.c
+--- collectd-5.4.0/src/collectd.c	Sun Aug 18 10:24:25 2013
++++ collectd-5.4.0fix/src/collectd.c	Thu Sep 12 22:01:30 2013
+@@ -288,7 +288,7 @@
+ #endif
+ 
+ #if HAVE_LIBSTATGRAB
+-	if (sg_init ())
++	if (sg_init (0))
+ 	{
+ 		ERROR ("sg_init: %s", sg_str_error (sg_get_error ()));
+ 		return (-1);

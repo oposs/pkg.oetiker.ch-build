@@ -27,21 +27,18 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=pango      # App name
-VER=1.30.1      # App version
+PROG=libstatgrab # App name
+VER=0.90         # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
-PKG=library/pango   # Package name (e.g. library/foo)
-SUMMARY="Pango is a library for laying out and rendering of text"      # One-liner, must be filled in
-DESC="Pango is a library for laying out and rendering of text, with an emphasis on internationalization. Pango can be used anywhere that text layout is needed, though most of the work on Pango so far has been done in the context of the GTK+ widget toolkit"         # Longer description, must be filled in
-DOWNLOADURL=http://ftp.gnome.org/pub/GNOME/sources/pango/1.30/pango-1.30.1.tar.xz
-BUILDARCH=32  # or 64 or both ... for libraries we want both for tools 32 bit only
+PKG=library/libstatgrab            # Package name (e.g. library/foo)
+SUMMARY="a library that provides cross platform access to statistics about the system on which it's run"      # One-liner, must be filled in
+DESC="libstatgrab is a library that provides cross platform access to statistics about the system on which it's run. It's written in C and presents a selection of useful interfaces which can be used to access key system statistics. The current list of statistics includes CPU usage, memory utilisation, disk usage, process counts, network traffic, disk I/O, and more."         # Longer description, must be filled in
+DOWNLOADURL=ftp://ftp.uk.i-scream.org/pub/i-scream/libstatgrab/libstatgrab-0.90.tar.gz
+BUILDARCH=32    # or 64 or both ... for libraries we want both for tools 32 bit only
 
-CPPFLAGS32="-I/opt/oep/include -I/opt/omni/include"
-LDFLAGS32="-L/opt/oep/lib -R/opt/oep/lib -L/opt/omni/lib -R/opt/omni/lib"
-
-BUILD_DEPENDS_IPS="library/cairo"
-RUN_DEPENDS_IPS="library/cairo"
+BUILD_DEPENDS_IPS=
+RUN_DEPENDS_IPS=
 
 init
 download_source $PROG $PROG $VER
@@ -49,8 +46,6 @@ patch_source
 prep_build
 build
 make_isa_stub
-logcmd mkdir -p $DESTDIR/opt/oep/etc/pango
-logcmd cp $SRCDIR/files/pango.modules  $DESTDIR/opt/oep/etc/pango
 make_package
 clean_up
 

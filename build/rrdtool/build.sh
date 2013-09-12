@@ -37,15 +37,26 @@ DESC="industry standard time series database with charting ability"         # Lo
 DOWNLOADURL="http://www.rrdtool.org/pub/rrdtool-1.4.8.tar.gz"
 BUILDARCH=32  # or 64 or both ... for libraries we want both for tools 32 bit only
 
-BUILD_DEPENDS_IPS=
-RUN_DEPENDS_IPS=
+BUILD_DEPENDS_IPS=library/pango
+RUN_DEPENDS_IPS=library/pango
 
+CPPFLAGS32="-I/opt/oep/include -I/opt/omni/include"
+LDFLAGS32="-L/opt/oep/lib -R/opt/oep/lib -L/opt/omni/lib -R/opt/omni/lib"
+CONFIGURE_OPTS="--enable-perl-site-install --disable-mmap"
+
+add_font() {
+    logmsg "Installing DejaVueMono"
+    logcmd mkdir -p $DESTDIR/usr/share/fonts/truetype/ttf-dejavue
+    logcmd cp $SRCDIR/fonts/* $DESTDIR/usr/share/fonts/truetype/ttf-dejavue
+}
+                                                                                                
 init
 download_source $PROG $PROG $VER
 patch_source
 prep_build
 build
 make_isa_stub
+add_font
 make_package
 clean_up
 
