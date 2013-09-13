@@ -35,18 +35,19 @@ PKG=library/openldap # Package name (e.g. library/foo)
 SUMMARY="openldap ldap library"      # One-liner, must be filled in
 DESC="an opensource implementation of ldap with library and tools"         # Longer description, must be filled in
 DOWNLOADURL="ftp://ftp.openldap.org/pub/OpenLDAP/openldap-release/openldap-2.4.36.tgz"
-BUILDARCH=32
+BUILDARCH=both
 
 BUILD_DEPENDS_IPS="omniti/database/bdb developer/build/pkg-config"
 RUN_DEPENDS_IPS=omniti/database/bdb
 
-LDFLAGS32="-R/opt/omni/lib -L/opt/omni/lib"
-CPPFLAGS32="-I/opt/omni/include"
+CPPFLAGS64="$CPPFLAGS64 -D_AVL_H"
+CPPFLAGS32="$CPPFLAGS32 -D_AVL_H"
 
 CONFIGURE_OPTS="--with-tls --enable-modules --enable-crypt --without-cyrus-sasl
   --without-subdir --enable-syslog --enable-proctitle --enable-overlays
-  --enable-accesslog --enable-lmpasswd --enable-perl --enable-ldap
+  --enable-accesslog --enable-lmpasswd --enable-ldap
   --disable-static"
+
 CONFIGURE_OPTS_32="--prefix=$PREFIX
   --sysconfdir=/etc/ldap
   --includedir=$PREFIX/include
@@ -54,9 +55,18 @@ CONFIGURE_OPTS_32="--prefix=$PREFIX
   --sbindir=$PREFIX/sbin/$ISAPART
   --libdir=$PREFIX/lib
   --libexecdir=$PREFIX/libexec"
+
+CONFIGURE_OPTS_64="--prefix=$PREFIX
+  --sysconfdir=/etc/ldap
+  --includedir=$PREFIX/include
+  --bindir=$PREFIX/bin/$ISAPART64
+  --sbindir=$PREFIX/sbin/$ISAPART64
+  --libdir=$PREFIX/lib/$ISAPART64
+  --libexecdir=$PREFIX/libexec/$ISAPART64"
+
 init
 download_source $PROG $PROG $VER
-patch_source
+patch_source -p0
 prep_build
 build
 make_isa_stub

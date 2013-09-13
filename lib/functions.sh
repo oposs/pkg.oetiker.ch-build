@@ -759,7 +759,7 @@ configure64() {
     CXXFLAGS="$CXXFLAGS $CXXFLAGS64" \
     CPPFLAGS="$CPPFLAGS $CPPFLAGS64" \
     LDFLAGS="$LDFLAGS $LDFLAGS64" \
-    CC=$CC CXX=$CXX \
+    CC="$CC -m64"  CXX="$CXX -m64" \
     logcmd $CONFIGURE_CMD $CONFIGURE_OPTS_64 \
     $CONFIGURE_OPTS || \
         logerr "--- Configure failed"

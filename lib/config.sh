@@ -38,8 +38,6 @@ MIRROR=mirrors.omniti.com
 PREFIX=/opt/oep
 
 # some additional locations where we expect to find libraries
-LDFLAGS32="-L/opt/omni/lib -R/opt/omni/lib -L/opt/oep/lib -R/opt/oep/lib"
-LDFLAGS64="-L/opt/omni/lib/amd64 -R/opt/omni/lib/amd64 -L/opt/oep/lib/amd64 -R/opt/oep/lib/amd64"
 
 # Temporary directories
 # TMPDIR is used for source archives and build directories
@@ -141,12 +139,11 @@ CFLAGS32=""
 CFLAGS64="-m64"
 
 # Linker flags
-LDFLAGS=""
-LDFLAGS32=""
-LDFLAGS64="-m64"
+LDFLAGS32="-L/opt/oep/lib -R/opt/oep/lib -L/opt/omni/lib -R/opt/omni/lib"
+LDFLAGS64="-m64 -L/opt/oep/lib/$ISAPART64 -R/opt/oep/lib/$ISAPART64  -L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64"
 
 # C pre-processor flags
-CPPFLAGS=""
+CPPFLAGS="-I/opt/oep/include -I/opt/omni/include"
 CPPFLAGS32=""
 CPPFLAGS64=""
 

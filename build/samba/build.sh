@@ -37,9 +37,9 @@ DESC="$SUMMARY ($VER)"         # Longer description, must be filled in
 DOWNLOADURL="http://ftp.samba.org/pub/samba/samba-$VER.tar.gz"
 BUILDARCH=32
 BUILDDIR=$PROG-$VER/source3
-
-BUILD_DEPENDS_IPS=library/openldap
-RUN_DEPENDS_IPS=library/openldap
+CPPFLAGS="$CPPFLAGS -I/usr/include/kerberosv5"
+BUILD_DEPENDS_IPS="library/openldap service/security/kerberos-5"
+RUN_DEPENDS_IPS="library/openldap service/security/kerberos-5"
 
 CONFIGURE_OPTS="
 	--with-included-popt
@@ -50,16 +50,38 @@ CONFIGURE_OPTS="
         --with-aio-support
         --with-automount
         --disable-swat            
+        --enable-nss-wrapper
+        --with-pam
+        --with-winbind
+        --with-ads
         --with-shared-modules=nfs4_acls,vfs_zfsacl"
 
 CONFIGURE_OPTS_32="
   --with-fhs
   --prefix=$PREFIX
   --mandir=$PREFIX/share/man
+  --bindir=$PREFIX/bin/$ISAPART
+  --sbindir=$PREFIX/sbin/$ISAPART
+  --libdir=$PREFIX/lib
+  --libexecdir=$PREFIX/libexec
   --sysconfdir=/etc
+  --with-pammodulesdir=/usr/lib/security
   --localstatedir=/var/samba
   --sharedstatedir=/var/samba" 
 
+CONFIGURE_OPTS_64="
+  --with-fhs
+  --prefix=$PREFIX
+  --mandir=$PREFIX/share/man
+  --sysconfdir=/etc
+  --with-pammodulesdir=/usr/lib/security/$ISAPART64
+  --localstatedir=/var/samba
+  --sharedstatedir=/var/samba
+  --bindir=$PREFIX/bin/$ISAPART64
+  --sbindir=$PREFIX/sbin/$ISAPART64
+  --libdir=$PREFIX/lib/$ISAPART64
+  --libexecdir=$PREFIX/libexec/$ISAPART64"
+                                                                                                        
 service_configs() {
     logmsg "Installing SMF"
     logcmd mkdir -p $DESTDIR/lib/svc/manifest/network/samba
@@ -71,12 +93,35 @@ service_configs() {
         $DESTDIR/lib/svc/manifest/network/samba/winbindd.xml
     logcmd cp $SRCDIR/files/smb.conf $DESTDIR/etc/samba/smb.conf
 }
+
+nss_install() {
+    ISAEXTRA=$1
+    # install the nss modules
+    logcmd cp $TMPDIR/$BUILDDIR/../nsswitch/libnss_winbind.so $DESTDIR/opt/oep/lib${ISAEXTRA}/nss_winbind.so.1
+    logcmd mkdir -p $DESTDIR/lib${ISAEXTRA}
+    logcmd cp $TMPDIR/$BUILDDIR/../nsswitch/libnss_wins.so $DESTDIR/opt/oep/lib${ISAEXTRA}/nss_wins.so.1
+    logcmd ln -s /opt/oep/lib/nss_winbind.so.1 $DESTDIR/lib$ISAEXTRA
+    logcmd ln -s /opt/oep/lib/nss_wins.so.1 $DESTDIR/lib$ISAEXTRA
+}
 init
+BUILDARCH=32
+rm -rf $TMPDIR/$PROG-$VER
 download_source $PROG $PROG $VER
 patch_source
 prep_build
 build
 service_configs
+nss_install
+# this guy seems to get forgotten on clean
+BUILDARCH=64
+rm -rf $TMPDIR/$PROG-$VER
+download_source $PROG $PROG $VER
+patch_source
+prep_build
+build
+service_configs
+nss_install /$ISAPART64
+BUILDARCH=both
 make_package
 clean_up
 

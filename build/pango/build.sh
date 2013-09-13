@@ -35,10 +35,7 @@ PKG=library/pango   # Package name (e.g. library/foo)
 SUMMARY="Pango is a library for laying out and rendering of text"      # One-liner, must be filled in
 DESC="Pango is a library for laying out and rendering of text, with an emphasis on internationalization. Pango can be used anywhere that text layout is needed, though most of the work on Pango so far has been done in the context of the GTK+ widget toolkit"         # Longer description, must be filled in
 DOWNLOADURL=http://ftp.gnome.org/pub/GNOME/sources/pango/1.30/pango-1.30.1.tar.xz
-BUILDARCH=32  # or 64 or both ... for libraries we want both for tools 32 bit only
-
-CPPFLAGS32="-I/opt/oep/include -I/opt/omni/include"
-LDFLAGS32="-L/opt/oep/lib -R/opt/oep/lib -L/opt/omni/lib -R/opt/omni/lib"
+BUILDARCH=both  # or 64 or both ... for libraries we want both for tools 32 bit only
 
 BUILD_DEPENDS_IPS="library/cairo"
 RUN_DEPENDS_IPS="library/cairo"
