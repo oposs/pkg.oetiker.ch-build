@@ -410,6 +410,7 @@ check_for_patches() {
 }
 
 patch_source() {
+    ARGS=$@
     if ! check_for_patches "in order to apply them"; then
         logmsg "--- Not applying any patches"
     else
@@ -419,7 +420,7 @@ patch_source() {
         pushd $TMPDIR/$BUILDDIR > /dev/null
         while read LINE <&3 ; do
             # Split Line into filename+args
-            patch_file $LINE
+            patch_file $LINE $ARGS
         done
         popd > /dev/null
         exec 3<&- # Close the file
