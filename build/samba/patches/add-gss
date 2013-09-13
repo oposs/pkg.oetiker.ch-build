@@ -1,0 +1,12 @@
+diff -ru samba-3.6.18.orig/source3/Makefile.in samba-3.6.18/source3/Makefile.in
+--- source3/Makefile.in	Mon Aug 12 07:25:27 2013
++++ source3/Makefile.in	Fri Sep 13 15:29:37 2013
+@@ -68,7 +68,7 @@
+ ACL_LIBS=@ACL_LIBS@
+ PASSDB_LIBS=@PASSDB_LIBS@
+ IDMAP_LIBS=@IDMAP_LIBS@
+-KRB5LIBS=@KRB5_LIBS@
++KRB5LIBS=@KRB5_LIBS@ -lgss
+ LDAP_LIBS=@LDAP_LIBS@
+ NSCD_LIBS=@NSCD_LIBS@
+ UUID_LIBS=@UUID_LIBS@
