@@ -35,6 +35,7 @@ PKG=service/network/samba # Package name (e.g. library/foo)
 SUMMARY="$PROG - CIFS server and domain controller"      # One-liner, must be filled in
 DESC="$SUMMARY ($VER)"         # Longer description, must be filled in
 DOWNLOADURL="http://ftp.samba.org/pub/samba/samba-$VER.tar.gz"
+#BUILDARCH=both (64 keeps crashing)
 BUILDARCH=32
 BUILDDIR=$PROG-$VER/source3
 CPPFLAGS="$CPPFLAGS -I/usr/include/kerberosv5"
@@ -54,6 +55,8 @@ CONFIGURE_OPTS="
         --with-pam
         --with-winbind
         --with-ads
+        --with-logfilebase=/var/log/samba
+        --with-piddir=/var/run
         --with-shared-modules=nfs4_acls,vfs_zfsacl"
 
 CONFIGURE_OPTS_32="
@@ -92,6 +95,7 @@ service_configs() {
     logcmd cp $SRCDIR/files/manifest-samba-winbindd.xml \
         $DESTDIR/lib/svc/manifest/network/samba/winbindd.xml
     logcmd cp $SRCDIR/files/smb.conf $DESTDIR/etc/samba/smb.conf
+    logcmd mkdir $DESTDIR/var/log/samba
 }
 
 nss_install() {
@@ -100,28 +104,34 @@ nss_install() {
     logcmd cp $TMPDIR/$BUILDDIR/../nsswitch/libnss_winbind.so $DESTDIR/opt/oep/lib${ISAEXTRA}/nss_winbind.so.1
     logcmd mkdir -p $DESTDIR/lib${ISAEXTRA}
     logcmd cp $TMPDIR/$BUILDDIR/../nsswitch/libnss_wins.so $DESTDIR/opt/oep/lib${ISAEXTRA}/nss_wins.so.1
-    logcmd ln -s /opt/oep/lib/nss_winbind.so.1 $DESTDIR/lib$ISAEXTRA
-    logcmd ln -s /opt/oep/lib/nss_wins.so.1 $DESTDIR/lib$ISAEXTRA
+    logcmd ln -s /opt/oep/lib$ISAEXTRA/nss_winbind.so.1 $DESTDIR/lib$ISAEXTRA
+    logcmd ln -s /opt/oep/lib$ISAEXTRA/nss_wins.so.1 $DESTDIR/lib$ISAEXTRA
 }
+
+# overriding the normal install functions to get to copy the libnss stuff since
+# samba does not seem to install it
+make_install32() {
+    make_install
+    nss_install 
+    # remove leftover object files
+    rm -rf $TMPDIR/$PROG-$VER/*/*.o
+}
+    
+make_install64() {
+    make_install
+    nss_install /$ISAPART64
+}
+        
+
+rm -rf $TMPDIR/$PROG-$VER || true
+
 init
-BUILDARCH=32
-rm -rf $TMPDIR/$PROG-$VER
 download_source $PROG $PROG $VER
 patch_source
 prep_build
 build
 service_configs
-nss_install
-# this guy seems to get forgotten on clean
-BUILDARCH=64
-rm -rf $TMPDIR/$PROG-$VER
-download_source $PROG $PROG $VER
-patch_source
-prep_build
-build
-service_configs
-nss_install /$ISAPART64
-BUILDARCH=both
+make_isa_stub
 make_package
 clean_up
 
