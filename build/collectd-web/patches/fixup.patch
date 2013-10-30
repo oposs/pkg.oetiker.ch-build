@@ -1,0 +1,190 @@
+Binary files collectd-web/.git/index and collectd-web-patched/.git/index differ
+diff -ruN collectd-web/.git/logs/HEAD collectd-web-patched/.git/logs/HEAD
+--- collectd-web/.git/logs/HEAD	2013-10-15 16:16:32.517612123 +0000
++++ collectd-web-patched/.git/logs/HEAD	2013-10-04 08:04:32.745314122 +0000
+@@ -1 +1 @@
+-0000000000000000000000000000000000000000 f5bef42aa0bc9eec58031f99bb51000f25d87eaa Super-User <root@pkg.oetiker.ch> 1381853792 +0000	clone: from https://github.com/httpdss/collectd-web.git
++0000000000000000000000000000000000000000 f5bef42aa0bc9eec58031f99bb51000f25d87eaa Super-User <root@pkg.oetiker.ch> 1380873872 +0000	clone: from https://github.com/httpdss/collectd-web.git
+diff -ruN collectd-web/.git/logs/refs/heads/master collectd-web-patched/.git/logs/refs/heads/master
+--- collectd-web/.git/logs/refs/heads/master	2013-10-15 16:16:32.517552828 +0000
++++ collectd-web-patched/.git/logs/refs/heads/master	2013-10-04 08:04:32.745134074 +0000
+@@ -1 +1 @@
+-0000000000000000000000000000000000000000 f5bef42aa0bc9eec58031f99bb51000f25d87eaa Super-User <root@pkg.oetiker.ch> 1381853792 +0000	clone: from https://github.com/httpdss/collectd-web.git
++0000000000000000000000000000000000000000 f5bef42aa0bc9eec58031f99bb51000f25d87eaa Super-User <root@pkg.oetiker.ch> 1380873872 +0000	clone: from https://github.com/httpdss/collectd-web.git
+diff -ruN collectd-web/.git/logs/refs/remotes/origin/HEAD collectd-web-patched/.git/logs/refs/remotes/origin/HEAD
+--- collectd-web/.git/logs/refs/remotes/origin/HEAD	2013-10-15 16:16:32.517199202 +0000
++++ collectd-web-patched/.git/logs/refs/remotes/origin/HEAD	2013-10-04 08:04:32.744430388 +0000
+@@ -1 +1 @@
+-0000000000000000000000000000000000000000 f5bef42aa0bc9eec58031f99bb51000f25d87eaa Super-User <root@pkg.oetiker.ch> 1381853792 +0000	clone: from https://github.com/httpdss/collectd-web.git
++0000000000000000000000000000000000000000 f5bef42aa0bc9eec58031f99bb51000f25d87eaa Super-User <root@pkg.oetiker.ch> 1380873872 +0000	clone: from https://github.com/httpdss/collectd-web.git
+diff -ruN collectd-web/cgi-bin/collection.modified.cgi collectd-web-patched/cgi-bin/collection.modified.cgi
+--- collectd-web/cgi-bin/collection.modified.cgi	2013-10-15 16:16:32.585398813 +0000
++++ collectd-web-patched/cgi-bin/collection.modified.cgi	2013-10-30 21:02:56.529258556 +0000
+@@ -52,7 +52,7 @@
+ our $MetaGraphDefs = {};
+ our $OutputFormat = '';
+ our $ContentType = 'image/png';
+-
++my $output = '';
+ load_graph_definitions();
+ 
+ 
+@@ -61,6 +61,7 @@
+ 	for (qw(action host plugin plugin_instance type type_instance timespan output enable-caching start end)) {
+           $Args->{$_} = param($_);
+         }  
++	$output = '';
+         main();
+     };
+     if ($@){
+@@ -350,13 +351,16 @@
+     my $host_ref = \@hosts;
+     @hosts = sort (@hosts);
+ 
++    my $list = to_json( $host_ref, { pretty => 1, indent => 2 } );
++
+     # Enable autoflush
+     print header(
+         -Content_Type => 'application/json',
+         -Charset      => 'utf-8',
+-        -Expires      => '+1h'
++        -Expires      => '+1h',
++	-content_length => length($list)
+     );
+-    print to_json( $host_ref, { pretty => 1, indent => 2 } );
++    print $list;
+     return (1);
+ }    # list_hosts_json
+ 
+@@ -450,14 +454,14 @@
+     my @hosts = _get_param_host ();
+     my $all_plugins = _find_files_for_hosts (@hosts);
+ 
+-    # Enable autoflush
+-    $| = 1;
++    my $list =  to_json ([sort (keys %$all_plugins)],
++    { pretty => 1, indent => 2 }) . "\n";
+ 
+     print header (-Content_Type => 'application/json',
+     -Charset => 'utf-8',
+-    -Expires => '+1h');
+-    print STDOUT to_json ([sort (keys %$all_plugins)],
+-    { pretty => 1, indent => 2 }) . "\n";
++    -Expires => '+1h',
++    -content_length => length($list));
++    print $list;
+     return (1);
+ } # action_show_host_json
+ 
+@@ -730,17 +734,18 @@
+     }    # for ($plugin)
+ 
+     # Enable autoflush
+-    $| = 1;
+-
+-    print STDOUT header (-Content_Type => 'application/json',
+-    -Charset => 'utf-8',
+-    -Expires => '+1h');
+-    print STDOUT to_json ({hour => [@plugin_list_hour],
++    my $list = to_json ({hour => [@plugin_list_hour],
+                            day =>  [@plugin_list_day] ,
+                            week => [@plugin_list_week],
+                            month => [@plugin_list_month],
+                            year => [@plugin_list_year]},
+     { pretty => 1, indent => 2 }) . "\n";
++
++    print header (-Content_Type => 'application/json',
++    -Charset => 'utf-8',
++    -Expires => '+1h',
++    -content_length => length($list));
++    print $list;
+     return (1);
+ }    # action_show_plugin_json
+ 
+@@ -808,7 +813,7 @@
+         return $MetaGraphDefs->{$type}
+           ->( $host, $plugin, $plugin_instance, $type, $types{$type} );
+     }
+-    return if ( !defined( $GraphDefs->{$type} ) );
++    return 'no graph definition found' if ( !defined( $GraphDefs->{$type} ) );
+     @rrd_args = @{ $GraphDefs->{$type} };
+     my $short_title =
+         ( defined($plugin_instance) ? "$plugin_instance/" : '' ) . "$type"
+@@ -848,7 +853,7 @@
+         if ( my $err = RRDs::error() ) {
+             confess("RRDs::graph: $err");
+         }
+-	print $out->{image};
++	return $out->{image};
+     }
+ }    # action_show_graph
+ 
+@@ -909,22 +914,22 @@
+         && defined( $Args->{'type'} )
+         && ( $Args->{'action'} eq 'show_graph' ) )
+     {
+-        $| = 1;
++        my $graph = action_show_graph(
++            $Args->{'host'},            $Args->{'plugin'},
++            $Args->{'plugin_instance'}, $Args->{'type'},
++            $Args->{'type_instance'}
++        );
+         if(defined ($Args->{'enable-caching'})){
+-            print STDOUT header(-Content_Type => $ContentType,
++            print header(-Content_Type => $ContentType,
+                                 -Expires=>'+1h',
+                                 -Cache_Control=>'maxage=3600',
+-                                -Pragma=>'public');
++                                -Pragma=>'public',
++				-content_length => length($graph));
+         } else {
+-            print STDOUT header( -Content_Type => $ContentType);
++            print header( -Content_Type => $ContentType, -content_length=>length($graph));
+         }
+ 
+-
+-        action_show_graph(
+-            $Args->{'host'},            $Args->{'plugin'},
+-            $Args->{'plugin_instance'}, $Args->{'type'},
+-            $Args->{'type_instance'}
+-        );
++	print $graph;
+         return (0);
+     }
+ 
+@@ -936,12 +941,12 @@
+     {
+         $| = 1;
+         if(defined ($Args->{'enable-caching'})){
+-            print STDOUT header(-Content_Type => $ContentType,
++            print  header(-Content_Type => $ContentType,
+                                 -Expires=>'+1h',
+                                 -Cache_Control=>'maxage=3600',
+                                 -Pragma=>'public' );
+         } else {
+-            print STDOUT header( -Content_Type => $ContentType);
++            print  header( -Content_Type => $ContentType);
+         }
+         action_show_graph(
+             $Args->{'host'},            $Args->{'plugin'},
+@@ -3501,7 +3506,7 @@
+         confess("RRDs::graph: $errmsg");
+ 	return;
+     }
+-    print $output->{image};
++    return $output->{image};
+ }    # meta_graph_generic_stack
+ 
+ sub meta_graph_cpu {
+diff -ruN collectd-web/cgi-bin/time.cgi collectd-web-patched/cgi-bin/time.cgi
+--- collectd-web/cgi-bin/time.cgi	2013-10-15 16:16:32.587444201 +0000
++++ collectd-web-patched/cgi-bin/time.cgi	2013-10-15 15:41:00.166171661 +0000
+@@ -27,7 +27,7 @@
+ use Time::Local;
+ use JSON ('to_json');
+ 
+-while (my $q = CGI::Fast->new){
++while (my $q = CGI->new){
+ 
+ 	my $tz = get_timezone();
+ 	my $response = to_json({'tz' => $tz});
