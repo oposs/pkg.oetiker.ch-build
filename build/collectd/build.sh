@@ -38,8 +38,8 @@ DESC="collectd gathers statistics about the system it is running on and stores t
 DOWNLOADURL=https://collectd.org/files/collectd-5.4.0.tar.bz2
 BUILDARCH=32    # or 64 or both ... for libraries we want both for tools 32 bit only
 
-BUILD_DEPENDS_IPS="database/rrdtool archiver/gnu-tar system/management/snmp/net-snmp library/libstatgrab omniti/security/libgcrypt"
-RUN_DEPENDS_IPS="database/rrdtool library/libstatgrab system/management/snmp/net-snmp omniti/security/libgcrypt"
+BUILD_DEPENDS_IPS="database/rrdtool archiver/gnu-tar system/management/snmp/net-snmp library/libstatgrab system/library/security/libgcrypt"
+RUN_DEPENDS_IPS="database/rrdtool library/libstatgrab system/management/snmp/net-snmp system/library/security/libgcrypt"
 CPPFLAGS32="-I/opt/oep/include -I/opt/omni/include"
 LDFLAGS32="-L/opt/oep/lib -R/opt/oep/lib -L/opt/omni/lib -R/opt/omni/lib"
 LD_RUN_PATH=/opt/oep/lib:/opt/omni/lib
