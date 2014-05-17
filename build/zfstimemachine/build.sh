@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=zfstimemachine # App name
-VER=20131218    # App version
+VER=20131223    # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=system/zfstimemachine # Package name (e.g. library/foo)
