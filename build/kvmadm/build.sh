@@ -27,13 +27,13 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=znapzend # App name
-VER=0.13.0    # App version
+PROG=kvmadm # App name
+VER=0.1.0    # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
-PKG=oep/znapzend # Package name (e.g. library/foo)
-SUMMARY="A ZFS-aware backup Script"      # One-liner, must be filled in
-DESC="Take snapshots and transfer them to a second pool, potentially on a different box"         # Longer description, must be filled in
+PKG=oep/kvmadm # Package name (e.g. library/foo)
+SUMMARY="a smf based kvm manager"      # One-liner, must be filled in
+DESC="Run your kvm hosts via smf"         # Longer description, must be filled in
 BUILDARCH=32    # or 64 or both ... for libraries we want both for tools 32 bit only
 BUILDDIR=$PROG
 BUILD_DEPENDS_IPS=
@@ -44,16 +44,15 @@ pushd $TMPDIR
 [ -d $PROG ] && rm -rf $PROG
 mkdir $PROG
 cd $PROG
-git clone https://github.com/oetiker/znapzend.git
-cd znapzend
+curl -L https://github.com/hadfl/kvmadm/releases/download/v$VER/kvmadm-$VER.tar.gz | gtar zxf -
+cd kvmadm-$VER
 prep_build
-./setup/build-thirdparty.sh $DESTDIR/opt/oep/thirdparty
-./configure --prefix=$DESTDIR/opt/oep
+./configure --prefix=$DESTDIR/opt/oep --disable-svcimport
 gmake install
 
 logmsg "Installing SMF"
-logcmd mkdir -p $DESTDIR/lib/svc/manifest/oep/znapzend
-logcmd cp $SRCDIR/files/manifest-znapzend.xml $DESTDIR/lib/svc/manifest/oep/znapzend/znapzend.xml
+logcmd mkdir -p $DESTDIR/lib/svc/manifest/oep/kvmadm
+logcmd cp $DESTDIR/opt/oep/share/kvmadm/smf/system-kvm.xml $DESTDIR/lib/svc/manifest/oep/kvmadm
 
 make_package
 clean_up

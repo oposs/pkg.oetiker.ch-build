@@ -28,7 +28,7 @@
 #############################################################################
 
 # Default branch
-RELVER=151008
+RELVER=151010
 PVER=0.$RELVER
 
 # Which server to fetch files from
@@ -95,7 +95,7 @@ PYTHONLIB=$PYTHONPATH/lib
 WGET=wget
 PATCH=gpatch
 MAKE=gmake
-TAR=tar
+TAR=gtar
 GZIP=gzip
 BUNZIP2=bunzip2
 XZCAT=xzcat
