@@ -52,7 +52,7 @@
         <template>
             <common_name>
                 <loctext xml:lang="C">
-                MiniDLNA - DLNA/UPnP server
+                MiniDLNA - DLNA/UPnP-AV media server
                 </loctext>
             </common_name>
         </template>
