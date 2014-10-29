@@ -20,8 +20,8 @@
 # CDDL HEADER END
 #
 #
-# Copyright 1995-2013 OETIKER+PARTNER AG All rights reserved.
+# Copyright 1995-2014 OETIKER+PARTNER AG All rights reserved.
 # Use is subject to license terms.
 #
 <transform dir path=etc/opt$ -> set group sys>
-<transform file path=etc/opt/hadfl/minidlna/.+$ -> set preserve renamenew>
+<transform file path=etc/opt/oep/minidlna/.+$ -> set preserve renamenew>

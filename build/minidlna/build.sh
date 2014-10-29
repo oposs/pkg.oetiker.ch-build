@@ -40,10 +40,15 @@ BUILDARCH=32
 BUILD_DEPENDS_IPS="database/sqlite-3 oep/multimedia/ffmpeg oep/graphics/libexif oep/audio/libid3tag oep/audio/libvorbis oep/audio/flac oep/graphics/libjpeg"
 RUN_DEPENDS_IPS="database/sqlite-3 oep/multimedia/ffmpeg oep/graphics/libexif oep/audio/libid3tag oep/audio/libvorbis oep/audio/flac oep/graphics/libjpeg"
 
-CONFIGURE_OPTS="--sysconfdir=/etc/opt/oep"
-
-CPPFLAGS32="-I/opt/oep/include -I/usr/include"
+CPPFLAGS32="-I/opt/oep/include -I/usr/include  -I$SRCDIR/files"
 LDFLAGS32="-L/opt/oep/lib -L/usr/lib -R/opt/oep/lib -lsocket -lnsl -lsendfile"
+
+default_config() {
+    logmsg "--- Copying default config file"
+    logcmd mkdir -p $DESTDIR/etc/opt/oep/$PROG
+    logcmd cp $TMPDIR/$BUILDDIR/${PROG}.conf $DESTDIR/etc/opt/oep/$PROG ||
+        logerr "Failed to copy default config file"
+}
 
 service_configs() {
     logmsg "--- Copying SMF manifest"
@@ -59,6 +64,7 @@ patch_source
 prep_build
 build
 make_isa_stub
+default_config
 #service_configs
 make_package
 clean_up
