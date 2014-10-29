@@ -27,21 +27,22 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=yasm
-VER=1.3.0
+PROG=netperf
+VER=2.6.0
 VERHUMAN=$VER
-PKG=oep/developer/yasm
-SUMMARY="The Yasm Modular Assembler Project (v$VER)"
+PKG=oep/network/netperf
+SUMMARY="$PROG - TCP/UDP/sockets/etc performance benchmark (v$VER)"
 DESC="$SUMMARY"
-MIRROR=www.tortall.net
-DLDIR=projects/yasm/releases
+DOWNLOADURL="ftp://ftp.netperf.org/$PROG/$PROG-$VER.tar.gz"
 BUILDARCH=32
 
 BUILD_DEPENDS_IPS=
 RUN_DEPENDS_IPS=
 
+CFLAGS="-lxnet -lsocket -lnsl -lkstat -D_XOPEN_SOURCE=500 -D__EXTENSIONS__ $CFLAGS"
+
 init
-download_source $DLDIR $PROG $VER
+download_source $PROG $PROG $VER
 patch_source
 prep_build
 build

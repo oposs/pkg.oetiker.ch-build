@@ -65,7 +65,7 @@ prep_build
 build
 make_isa_stub
 default_config
-#service_configs
+service_configs
 make_package
 clean_up
 
