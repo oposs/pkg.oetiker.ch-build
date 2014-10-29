@@ -1,0 +1,11 @@
+--- minidlna-1.1.4/config.h.in		2014-10-28 22:46:36.120871754 +0000
++++ minidlna-1.1.4/config.h.in.fix	2014-10-28 22:47:14.085350386 +0000
+@@ -1,5 +1,8 @@
+ /* config.h.in.  Generated from configure.ac by autoheader.  */
+ 
++#define MIN(a,b) (((a)<(b))?(a):(b))
++#define MAX(a,b) (((a)>(b))?(a):(b))
++
+ /* Define if building universal (internal helper macro) */
+ #undef AC_APPLE_UNIVERSAL_BUILD
+ 
