@@ -28,13 +28,13 @@
 . ../../lib/functions.sh
 
 PROG=openldap   # App name
-VER=2.4.36      # App version
+VER=2.4.40      # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=library/openldap # Package name (e.g. library/foo)
 SUMMARY="openldap ldap library"      # One-liner, must be filled in
 DESC="an opensource implementation of ldap with library and tools"         # Longer description, must be filled in
-DOWNLOADURL="ftp://ftp.openldap.org/pub/OpenLDAP/openldap-release/openldap-2.4.36.tgz"
+DOWNLOADURL="ftp://ftp.openldap.org/pub/OpenLDAP/openldap-release/openldap-2.4.40.tgz"
 BUILDARCH=both
 
 BUILD_DEPENDS_IPS="omniti/database/bdb developer/build/pkg-config"
