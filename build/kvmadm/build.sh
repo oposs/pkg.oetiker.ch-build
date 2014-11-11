@@ -37,7 +37,7 @@ DESC="Run your kvm hosts via smf"         # Longer description, must be filled i
 BUILDARCH=32    # or 64 or both ... for libraries we want both for tools 32 bit only
 BUILDDIR=$PROG
 BUILD_DEPENDS_IPS=
-RUN_DEPENDS_IPS=
+RUN_DEPENDS_IPS="network/netcat"
 
 init
 pushd $TMPDIR
