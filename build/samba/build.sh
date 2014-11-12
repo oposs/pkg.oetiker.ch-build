@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=samba      # App name
-VER=3.6.21      # App version
+VER=3.6.24      # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=service/network/samba # Package name (e.g. library/foo)
