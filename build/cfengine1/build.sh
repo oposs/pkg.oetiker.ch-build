@@ -31,7 +31,7 @@ PROG=cfengine   # App name
 VER=1.6.5       # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
-PKG=admin/cfengine1 # Package name (e.g. library/foo)
+PKG=oep/admin/cfengine1 # Package name (e.g. library/foo)
 SUMMARY="configuration management utility"      # One-liner, must be filled in
 DESC="configuration management utility (legacy version 1.6.5)"         # Longer description, must be filled in
 DOWNLOADURL="http://cfengine.com/source-code/download?file=cfengine-1.6.5.tar.gz"
