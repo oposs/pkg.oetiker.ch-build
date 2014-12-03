@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=samba     # App name
-VER=4.1.13      # App version
+VER=4.1.14      # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=oep/service/network/samba4 # Package name (e.g. library/foo)
@@ -64,7 +64,7 @@ CONFIGURE_OPTS_32="
   --sbindir=$PREFIX/sbin/$ISAPART
   --libdir=$PREFIX/lib
   --libexecdir=$PREFIX/libexec
-  --sysconfdir=/etc
+  --sysconfdir=/etc/samba
   --with-pammodulesdir=/usr/lib/security
   --localstatedir=/var/samba
   --sharedstatedir=/var/samba" 
@@ -73,7 +73,7 @@ CONFIGURE_OPTS_32="
 CONFIGURE_OPTS_64="
   --prefix=$PREFIX
   --mandir=$PREFIX/share/man
-  --sysconfdir=/etc
+  --sysconfdir=/etc/samba
   --with-pammodulesdir=/usr/lib/security/$ISAPART64
   --localstatedir=/var/samba
   --sharedstatedir=/var/samba
