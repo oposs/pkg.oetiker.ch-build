@@ -21,33 +21,28 @@
 # CDDL HEADER END
 #
 #
-# Copyright 1995-2013 OETIKER+PARTNER AG  All rights reserved.
+# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=openldap   # App name
-VER=2.4.40      # App version
-VERHUMAN=$VER   # Human-readable version
-#PVER=          # Branch (set in config.sh, override here if needed)
-PKG=oep/library/openldap # Package name (e.g. library/foo)
-SUMMARY="openldap ldap library"      # One-liner, must be filled in
-DESC="an opensource implementation of ldap with library and tools"         # Longer description, must be filled in
+PROG=libgcrypt
+VER=1.6.2
+VERHUMAN=$VER
+PKG=oep/library/security/libgcrypt
+SUMMARY="Libgcrypt is GNU's basic cryptographic library."
+DESC="Libgcrypt is a general purpose cryptographic library based on the code from GnuPG. It provides functions for all cryptographic building blocks: symmetric ciphers, hash algorithms, MACs, public key algorithms, large integer functions, random numbers and a lot of supporting functions."
 
-BUILDARCH=both
+DEPENDS_IPS="oep/library/security/libgpg-error"
+
+#BUILDARCH=both
+BUILDARCH=32
 
 CPPFLAGS64="$CPPFLAGS64 -D_AVL_H"
 CPPFLAGS32="$CPPFLAGS32 -D_AVL_H"
 
-CONFIGURE_OPTS="--with-tls --enable-modules --enable-crypt --without-cyrus-sasl
-  --without-subdir --enable-syslog --enable-proctitle --enable-overlays
-  --enable-accesslog --enable-lmpasswd --enable-ldap 
-  --disable-static --enable-bdb=no --enable-hdb=no --enable-mdb"
-
-
 CONFIGURE_OPTS_32="--prefix=$PREFIX
-  --sysconfdir=/etc/ldap
   --includedir=$PREFIX/include
   --bindir=$PREFIX/bin/$ISAPART
   --sbindir=$PREFIX/sbin/$ISAPART
@@ -55,16 +50,18 @@ CONFIGURE_OPTS_32="--prefix=$PREFIX
   --libexecdir=$PREFIX/libexec"
 
 CONFIGURE_OPTS_64="--prefix=$PREFIX
-  --sysconfdir=/etc/ldap
   --includedir=$PREFIX/include
   --bindir=$PREFIX/bin/$ISAPART64
   --sbindir=$PREFIX/sbin/$ISAPART64
   --libdir=$PREFIX/lib/$ISAPART64
   --libexecdir=$PREFIX/libexec/$ISAPART64"
 
+
+DOWNLOADURL=http://mirror.switch.ch/ftp/mirror/gnupg/libgcrypt/${PROG}-${VER}.tar.gz
+
 init
 download_source $PROG $PROG $VER
-patch_source -p0
+patch_source
 prep_build
 build
 make_isa_stub

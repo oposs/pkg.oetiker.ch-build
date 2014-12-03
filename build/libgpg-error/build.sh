@@ -21,33 +21,25 @@
 # CDDL HEADER END
 #
 #
-# Copyright 1995-2013 OETIKER+PARTNER AG  All rights reserved.
+# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=openldap   # App name
-VER=2.4.40      # App version
-VERHUMAN=$VER   # Human-readable version
-#PVER=          # Branch (set in config.sh, override here if needed)
-PKG=oep/library/openldap # Package name (e.g. library/foo)
-SUMMARY="openldap ldap library"      # One-liner, must be filled in
-DESC="an opensource implementation of ldap with library and tools"         # Longer description, must be filled in
+PROG=libgpg-error
+VER=1.17
+VERHUMAN=$VER
+PKG=oep/library/security/libgpg-error
+SUMMARY="Libgpg-error is a small library with error codes and descriptions shared by most GnuPG related software."
+DESC="$SUMMARY ($VER)"
 
 BUILDARCH=both
 
 CPPFLAGS64="$CPPFLAGS64 -D_AVL_H"
 CPPFLAGS32="$CPPFLAGS32 -D_AVL_H"
 
-CONFIGURE_OPTS="--with-tls --enable-modules --enable-crypt --without-cyrus-sasl
-  --without-subdir --enable-syslog --enable-proctitle --enable-overlays
-  --enable-accesslog --enable-lmpasswd --enable-ldap 
-  --disable-static --enable-bdb=no --enable-hdb=no --enable-mdb"
-
-
 CONFIGURE_OPTS_32="--prefix=$PREFIX
-  --sysconfdir=/etc/ldap
   --includedir=$PREFIX/include
   --bindir=$PREFIX/bin/$ISAPART
   --sbindir=$PREFIX/sbin/$ISAPART
@@ -55,16 +47,16 @@ CONFIGURE_OPTS_32="--prefix=$PREFIX
   --libexecdir=$PREFIX/libexec"
 
 CONFIGURE_OPTS_64="--prefix=$PREFIX
-  --sysconfdir=/etc/ldap
   --includedir=$PREFIX/include
   --bindir=$PREFIX/bin/$ISAPART64
   --sbindir=$PREFIX/sbin/$ISAPART64
   --libdir=$PREFIX/lib/$ISAPART64
   --libexecdir=$PREFIX/libexec/$ISAPART64"
 
+DOWNLOADURL=http://mirror.switch.ch/ftp/mirror/gnupg/libgpg-error/libgpg-error-${VER}.tar.gz
 init
 download_source $PROG $PROG $VER
-patch_source -p0
+patch_source
 prep_build
 build
 make_isa_stub
