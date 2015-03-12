@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 2011-2012 OmniTI Computer Consulting, Inc.  All rights reserved.
+# Copyright 1995-2013 OETIKER+PARTNER AG  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=libgcrypt
-VER=1.6.2
+VER=1.6.3
 VERHUMAN=$VER
 PKG=oep/library/security/libgcrypt
 SUMMARY="Libgcrypt is GNU's basic cryptographic library."
