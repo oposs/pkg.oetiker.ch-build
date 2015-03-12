@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=samba     # App name
-VER=4.1.14      # App version
+VER=4.2.0      # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=oep/service/network/samba4 # Package name (e.g. library/foo)
@@ -42,46 +42,36 @@ BUILD_DEPENDS_IPS="oep/library/openldap oep/library/security/libgpg-error oep/li
 RUN_DEPENDS_IPS="oep/library/openldap oep/library/security/libgpg-error oep/library/security/libgcrypt"
 
 CONFIGURE_OPTS="
-	--with-pam
-	--with-quotas
-        --with-syslog
-        --with-acl-support
-        --with-aio-support
-        --with-automount
-        --enable-nss-wrapper
-        --with-pam
+  	--prefix=$PREFIX
+  	--bindir=$PREFIX/bin
+  	--sbindir=$PREFIX/sbin
+	--mandir=$PREFIX/share/man
+  	--libdir=$PREFIX/lib
+  	--libexecdir=$PREFIX/libexec
+	--infodir=$PREFIX/info
+  	--sysconfdir=/etc/samba
+	--with-configdir=/etc/samba
+	--with-privatedir=/etc/samba/private
+  	--localstatedir=/var/samba
+  	--sharedstatedir=/var/samba
+        --with-logfilebase=/var/log/samba
+	--bundled-libraries=ALL
+        --with-shared-modules=nfs4_acls,vfs_zfsacl
+  	--with-pammodulesdir=/usr/lib/security
+        --with-piddir=/var/run
         --with-winbind
         --with-ads
-        --with-logfilebase=/var/log/samba
-        --with-piddir=/var/run
-        --with-shared-modules=nfs4_acls,vfs_zfsacl"
+	--with-ldap
+	--with-pam
+	--with-iconv
+        --with-acl-support
+        --with-syslog
+        --with-aio-support
+	--enable-fhs
+	--with-quotas
+	--without-ad-dc
+        --with-automount"
 
- # --with-fhs
-CONFIGURE_OPTS_32="
-  --prefix=$PREFIX
-  --mandir=$PREFIX/share/man
-  --bindir=$PREFIX/bin/$ISAPART
-  --sbindir=$PREFIX/sbin/$ISAPART
-  --libdir=$PREFIX/lib
-  --libexecdir=$PREFIX/libexec
-  --sysconfdir=/etc/samba
-  --with-pammodulesdir=/usr/lib/security
-  --localstatedir=/var/samba
-  --sharedstatedir=/var/samba" 
-
- # --with-fhs
-CONFIGURE_OPTS_64="
-  --prefix=$PREFIX
-  --mandir=$PREFIX/share/man
-  --sysconfdir=/etc/samba
-  --with-pammodulesdir=/usr/lib/security/$ISAPART64
-  --localstatedir=/var/samba
-  --sharedstatedir=/var/samba
-  --bindir=$PREFIX/bin/$ISAPART64
-  --sbindir=$PREFIX/sbin/$ISAPART64
-  --libdir=$PREFIX/lib/$ISAPART64
-  --libexecdir=$PREFIX/libexec/$ISAPART64"
-                                                                                                        
 service_configs() {
     logmsg "Installing SMF"
     logcmd mkdir -p $DESTDIR/lib/svc/manifest/network/samba
@@ -95,30 +85,13 @@ service_configs() {
     logcmd mkdir $DESTDIR/var/log/samba
 }
 
-nss_install() {
-    ISAEXTRA=$1
-    # install the nss modules
-    logcmd cp $TMPDIR/$BUILDDIR/../nsswitch/libnss_winbind.so $DESTDIR/opt/oep/lib${ISAEXTRA}/nss_winbind.so.1
-    logcmd mkdir -p $DESTDIR/lib${ISAEXTRA}
-    logcmd cp $TMPDIR/$BUILDDIR/../nsswitch/libnss_wins.so $DESTDIR/opt/oep/lib${ISAEXTRA}/nss_wins.so.1
-    logcmd ln -s /opt/oep/lib$ISAEXTRA/nss_winbind.so.1 $DESTDIR/lib$ISAEXTRA
-    logcmd ln -s /opt/oep/lib$ISAEXTRA/nss_wins.so.1 $DESTDIR/lib$ISAEXTRA
-}
-
 # overriding the normal install functions to get to copy the libnss stuff since
 # samba does not seem to install it
 make_install32() {
     make_install
-#    nss_install 
-    # remove leftover object files
     rm -rf $TMPDIR/$PROG-$VER/*/*.o
 }
     
-make_install64() {
-    make_install
-    nss_install /$ISAPART64
-}
-        
 
 rm -rf $TMPDIR/$PROG-$VER || true
 
@@ -127,8 +100,8 @@ download_source $PROG $PROG $VER
 patch_source
 prep_build
 build
-service_configs
 make_isa_stub
+service_configs
 make_package
 clean_up
 
