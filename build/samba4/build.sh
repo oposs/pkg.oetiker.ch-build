@@ -39,7 +39,7 @@ DOWNLOADURL="http://ftp.samba.org/pub/samba/samba-$VER.tar.gz"
 BUILDARCH=32
 BUILDDIR=$PROG-$VER
 BUILD_DEPENDS_IPS="oep/library/openldap oep/library/security/libgpg-error oep/library/security/libgcrypt"
-RUN_DEPENDS_IPS="oep/library/openldap oep/library/security/libgpg-error oep/library/security/libgcrypt"
+RUN_DEPENDS_IPS="oep/library/security/libgpg-error oep/library/security/libgcrypt"
 
 CONFIGURE_OPTS="
   	--prefix=$PREFIX
@@ -56,7 +56,7 @@ CONFIGURE_OPTS="
   	--sharedstatedir=/var/samba
         --with-logfilebase=/var/log/samba
 	--bundled-libraries=ALL
-        --with-shared-modules=nfs4_acls,vfs_zfsacl
+        --with-shared-modules=nfs4_acls,vfs_zfsacl,vfs_fruit
   	--with-pammodulesdir=/usr/lib/security
         --with-piddir=/var/run
         --with-winbind

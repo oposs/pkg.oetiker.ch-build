@@ -36,8 +36,8 @@ DESC="Libgcrypt is a general purpose cryptographic library based on the code fro
 
 DEPENDS_IPS="oep/library/security/libgpg-error"
 
-#BUILDARCH=both
-BUILDARCH=32
+BUILDARCH=both
+#BUILDARCH=32
 
 CPPFLAGS64="$CPPFLAGS64 -D_AVL_H"
 CPPFLAGS32="$CPPFLAGS32 -D_AVL_H"

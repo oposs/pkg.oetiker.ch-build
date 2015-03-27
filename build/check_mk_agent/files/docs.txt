@@ -1,0 +1,6 @@
+Post Install
+---------------------------
+1. add the following line to /etc/services
+check_mk        6556/tcp                        # check_mk_agent
+2. enable the smf service
+svcadm enable svc:/network/check_mk/tcp
