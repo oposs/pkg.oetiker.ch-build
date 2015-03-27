@@ -30,7 +30,7 @@
 . ../myfunc.sh
 
 PROG=check_mk_agent                         # App name
-VER=0                                       # App version
+VER=1.2.7                                   # App version
 VERHUMAN=$VER-1                             # Human-readable version
 PKG=oep/network/check_mk_agent              # Package name (e.g. library/foo)
 SUMMARY="Monitoring agent for check_mk."
@@ -42,23 +42,23 @@ BUILD_DEPENDS_IPS=""
 BUILDARCH=both
 
 # package specific
-MIRROR=manuel.oetiker.ch
+MIRROR=raw.githubusercontent.com
 
 download_source() {
     logmsg "Downloading Source"
 
     cd ${TMPDIR}
-    wget -c http://$MIRROR/check_mk_agent.solaris
+    wget -c https://$MIRROR/moetiker/check_mk_mirror/master/agents/check_mk_agent.solaris
 }
 
 build() {
     logmsg "--- building"
     logmsg "---- autodetecting version"
-    VER=$(grep -i "version:" ${TMPDIR}/check_mk_agent.solaris | awk '{ print $3 }' | sed 's/p/\./g')
+    #VER=$(grep -i "version:" ${TMPDIR}/check_mk_agent.solaris | awk '{ print $3 }' | sed 's/p/\./g')
 
     logmsg "---- fixing paths"
-    /usr/bin/gsed -i "s#MK_CONFDIR=\"/change/me\"#MK_CONFDIR=\"${PREFIX}/etc/check_mk_agent\"#" ${TMPDIR}/check_mk_agent.solaris
-    /usr/bin/gsed -i "s#MK_LIBDIR=\"/change/me\"#MK_LIBDIR=\"${PREFIX}/lib/check_mk_agent\"#" ${TMPDIR}/check_mk_agent.solaris
+    /usr/bin/gsed -i 's#MK_CONFDIR=\"/usr#MK_CONFDIR=\"opt/oep#' ${TMPDIR}/check_mk_agent.solaris
+    /usr/bin/gsed -i 's#MK_LIBDIR=\"/usr#MK_LIBDIR=\"/opt/oep#' ${TMPDIR}/check_mk_agent.solaris
 }
 
 make_install() {
@@ -97,7 +97,7 @@ make_install() {
 
 init
 prep_build
-download_source ${DLPATH} ${PROG} ${VER}
+download_source 
 patch_source
 build
 make_install
