@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=kvmadm # App name
-VER=0.1.0    # App version
+VER=0.8.2    # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=oep/kvmadm # Package name (e.g. library/foo)
@@ -47,8 +47,8 @@ cd $PROG
 curl -L https://github.com/hadfl/kvmadm/releases/download/v$VER/kvmadm-$VER.tar.gz | gtar zxf -
 cd kvmadm-$VER
 prep_build
-./configure --prefix=$DESTDIR/opt/oep --disable-svcimport
-gmake install
+./configure --prefix=/opt/oep --disable-svcimport
+gmake install DESTDIR=$DESTDIR
 
 logmsg "Installing SMF"
 logcmd mkdir -p $DESTDIR/lib/svc/manifest/oep/kvmadm
