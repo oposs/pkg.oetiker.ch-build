@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=znapzend # App name
-VER=0.13.0    # App version
+VER=0.14.0    # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=oep/znapzend # Package name (e.g. library/foo)
@@ -47,8 +47,8 @@ cd $PROG
 git clone https://github.com/oetiker/znapzend.git
 cd znapzend
 prep_build
-./setup/build-thirdparty.sh $DESTDIR/opt/oep/thirdparty
 ./configure --prefix=$DESTDIR/opt/oep
+gmake get-thirdparty-modules
 gmake install
 
 logmsg "Installing SMF"

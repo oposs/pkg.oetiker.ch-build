@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=kvmadm # App name
-VER=0.2.2    # App version
+VER=0.8.2    # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=oep/kvmadm # Package name (e.g. library/foo)
