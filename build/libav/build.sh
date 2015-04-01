@@ -21,40 +21,45 @@
 # CDDL HEADER END
 #
 #
-# Copyright 1995-2013 OETIKER+PARTNER AG  All rights reserved.
+# Copyright 1995-2014 OETIKER+PARTNER AG.  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=znapzend # App name
-VER=0.14.0    # App version
-VERHUMAN=$VER   # Human-readable version
-#PVER=          # Branch (set in config.sh, override here if needed)
-PKG=oep/znapzend # Package name (e.g. library/foo)
-SUMMARY="A ZFS-aware backup Script"      # One-liner, must be filled in
-DESC="Take snapshots and transfer them to a second pool, potentially on a different box"         # Longer description, must be filled in
-BUILDARCH=32    # or 64 or both ... for libraries we want both for tools 32 bit only
-BUILDDIR=$PROG
+PROG=libav
+VER=11
+VERHUMAN=$VER
+PKG=oep/multimedia/libav
+SUMMARY="$PROG - high-performance libraries for dealing with multimedia formats of all sorts (v$VER)"
+DESC="Libav is a collection of libraries and tools to process multimedia content such as audio, video, subtitles and related metadata."
+MIRROR=libav.org
+DLDIR=releases
+BUILDARCH=both
+
 BUILD_DEPENDS_IPS=
 RUN_DEPENDS_IPS=
 
+CONFIGURE_OPTS="
+    --prefix=/opt/oep
+    --enable-shared" 
+
+CONFIGURE_OPTS_32="
+    --bindir=$PREFIX/bin/$ISAPART
+    --libdir=$PREFIX/lib
+    --shlibdir=$PREFIX/lib"
+
+CONFIGURE_OPTS_64="
+    --bindir=$PREFIX/bin/$ISAPART64
+    --libdir=$PREFIX/lib/$ISAPART64
+    --shlibdir=$PREFIX/lib/$ISAPART64"
+
 init
-pushd $TMPDIR
-[ -d $PROG ] && rm -rf $PROG
-mkdir $PROG
-cd $PROG
-git clone https://github.com/oetiker/znapzend.git
-cd znapzend
+download_source $DLDIR $PROG $VER
+patch_source
 prep_build
-./configure --prefix=$DESTDIR/opt/oep
-gmake get-thirdparty-modules
-gmake install
-
-logmsg "Installing SMF"
-logcmd mkdir -p $DESTDIR/lib/svc/manifest/oep/znapzend
-logcmd cp $SRCDIR/files/manifest-znapzend.xml $DESTDIR/lib/svc/manifest/oep/znapzend/znapzend.xml
-
+build
+make_isa_stub
 make_package
 clean_up
 

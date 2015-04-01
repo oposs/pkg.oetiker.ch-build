@@ -46,7 +46,6 @@ patch_source
 prep_build
 build
 make_isa_stub
-symlink_usr_bin
 make_package
 clean_up
 
