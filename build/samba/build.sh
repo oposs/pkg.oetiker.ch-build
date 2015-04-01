@@ -57,7 +57,7 @@ CONFIGURE_OPTS="
         --with-ads
         --with-logfilebase=/var/log/samba
         --with-piddir=/var/run
-        --with-shared-modules=nfs4_acls,vfs_zfsacl"
+        --with-shared-modules=nfs4_acls,vfs_zfsacl,vfs_fruit"
 
 CONFIGURE_OPTS_32="
   --with-fhs
