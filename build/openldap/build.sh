@@ -47,7 +47,7 @@ CONFIGURE_OPTS="--with-tls --enable-modules --enable-crypt --without-cyrus-sasl
 
 
 CONFIGURE_OPTS_32="--prefix=$PREFIX
-  --sysconfdir=/etc/ldap
+  --sysconfdir=/etc/opt/oep/ldap
   --includedir=$PREFIX/include
   --bindir=$PREFIX/bin/$ISAPART
   --sbindir=$PREFIX/sbin/$ISAPART
@@ -55,18 +55,26 @@ CONFIGURE_OPTS_32="--prefix=$PREFIX
   --libexecdir=$PREFIX/libexec"
 
 CONFIGURE_OPTS_64="--prefix=$PREFIX
-  --sysconfdir=/etc/ldap
+  --sysconfdir=/etc/opt/oep/ldap
   --includedir=$PREFIX/include
   --bindir=$PREFIX/bin/$ISAPART64
   --sbindir=$PREFIX/sbin/$ISAPART64
   --libdir=$PREFIX/lib/$ISAPART64
   --libexecdir=$PREFIX/libexec/$ISAPART64"
 
+service_configs() {
+    logmsg "Installing SMF"
+    logcmd mkdir -p $DESTDIR/lib/svc/manifest/network/ldap
+    logcmd cp $SRCDIR/files/manifest-slapd.xml \
+        $DESTDIR/lib/svc/manifest/network/ldap/slapd.xml
+}
+
 init
 download_source $PROG $PROG $VER
 patch_source -p0
 prep_build
 build
+service_configs
 make_isa_stub
 make_package
 clean_up
