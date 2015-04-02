@@ -52,7 +52,9 @@ CONFIGURE_OPTS_32="--prefix=$PREFIX
   --bindir=$PREFIX/bin/$ISAPART
   --sbindir=$PREFIX/sbin/$ISAPART
   --libdir=$PREFIX/lib
-  --libexecdir=$PREFIX/libexec"
+  --libexecdir=$PREFIX/libexec
+  --localstatedir=/var/opt/oep"
+
 
 CONFIGURE_OPTS_64="--prefix=$PREFIX
   --sysconfdir=/etc/opt/oep/ldap
@@ -60,13 +62,26 @@ CONFIGURE_OPTS_64="--prefix=$PREFIX
   --bindir=$PREFIX/bin/$ISAPART64
   --sbindir=$PREFIX/sbin/$ISAPART64
   --libdir=$PREFIX/lib/$ISAPART64
-  --libexecdir=$PREFIX/libexec/$ISAPART64"
+  --libexecdir=$PREFIX/libexec/$ISAPART64
+  --localstatedir=/var/opt/oep"
+
+
+save_function make_prog make_prog_orig
+make_prog(){
+    logmsg "--- make depend"
+    logcmd $MAKE depend || \
+        logerr "--- make depend failed"
+    make_prog_orig
+}
 
 service_configs() {
     logmsg "Installing SMF"
     logcmd mkdir -p $DESTDIR/lib/svc/manifest/network/ldap
-    logcmd cp $SRCDIR/files/manifest-slapd.xml \
-        $DESTDIR/lib/svc/manifest/network/ldap/slapd.xml
+    logcmd cp $SRCDIR/files/manifest-openldap.xml \
+        $DESTDIR/lib/svc/manifest/network/ldap/openldap.xml
+    logcmd mkdir -p $DESTDIR/lib/svc/method
+    logcmd cp -a $SRCDIR/files/slapd \
+        $DESTDIR/lib/svc/method/slapd
 }
 
 init
@@ -74,8 +89,8 @@ download_source $PROG $PROG $VER
 patch_source -p0
 prep_build
 build
-service_configs
 make_isa_stub
+service_configs
 make_package
 clean_up
 
