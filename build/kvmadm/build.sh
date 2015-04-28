@@ -47,8 +47,11 @@ cd $PROG
 curl -L https://github.com/hadfl/kvmadm/releases/download/v$VER/kvmadm-$VER.tar.gz | gtar zxf -
 cd kvmadm-$VER
 prep_build
-./configure --prefix=/opt/oep --disable-svcimport
+./configure --prefix=/opt/oep/$PROG --disable-svcimport
 gmake install DESTDIR=$DESTDIR
+
+# create symbolic link to standard bin dir
+logcmd ln -s /opt/oep/$PROG/bin/$PROG /opt/oep/bin/$PROG
 
 logmsg "Installing SMF"
 logcmd mkdir -p $DESTDIR/lib/svc/manifest/oep/kvmadm
