@@ -52,6 +52,8 @@ gmake install DESTDIR=$DESTDIR
 
 # create symbolic link to standard bin dir
 logcmd ln -s /opt/oep/$PROG/bin/$PROG /opt/oep/bin/$PROG
+# create symbolic link to man page
+logcmd ln -s /opt/oep/$PROG/share/man/man1/kvmadm.1 /opt/oep/share/man/man1/kvmadm.1
 
 logmsg "Installing SMF"
 logcmd mkdir -p $DESTDIR/lib/svc/manifest/oep/kvmadm
