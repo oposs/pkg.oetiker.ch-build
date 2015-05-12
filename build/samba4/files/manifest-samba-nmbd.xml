@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
-<service_bundle type="manifest" name="samba-nmbd">
+<service_bundle type="manifest" name="smaba4-nmbd">
 
-    <service name="network/samba/nmbd" type="service" version="1">
+    <service name="network/smaba4/nmbd" type="service" version="1">
 
         <create_default_instance enabled="false" />
 
@@ -24,13 +24,13 @@
             <service_fmri value="svc:/system/filesystem/local" />
         </dependency>
 
-        <dependent name="samba-nmbd-multi-user-server" grouping="optional_all" restart_on="none">
+        <dependent name="smaba4-nmbd-multi-user-server" grouping="optional_all" restart_on="none">
             <service_fmri value="svc:/milestone/multi-user-server" />
         </dependent>
 
         <exec_method type="method" name="start" exec="/opt/oep/sbin/nmbd -D" timeout_seconds="170" />
 
-        <exec_method type="method" name="stop" exec="/usr/bin/kill `cat /var/samba/locks/nmbd.pid`" timeout_seconds="60" />
+        <exec_method type="method" name="stop" exec="/usr/bin/kill `cat /var/opt/oep/samba/locks/nmbd.pid`" timeout_seconds="60" />
 
         <stability value="Unstable" />
 

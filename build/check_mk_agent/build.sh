@@ -30,7 +30,7 @@
 . ../myfunc.sh
 
 PROG=check_mk_agent                         # App name
-VER=1.2.7                                   # App version
+VER=1.2.6.2                                 # App version
 VERHUMAN=$VER-1                             # Human-readable version
 PKG=oep/network/check_mk_agent              # Package name (e.g. library/foo)
 SUMMARY="Monitoring agent for check_mk."
@@ -57,8 +57,8 @@ build() {
     #VER=$(grep -i "version:" ${TMPDIR}/check_mk_agent.solaris | awk '{ print $3 }' | sed 's/p/\./g')
 
     logmsg "---- fixing paths"
-    /usr/bin/gsed -i 's#MK_CONFDIR=\"/usr#MK_CONFDIR=\"opt/oep#' ${TMPDIR}/check_mk_agent.solaris
-    /usr/bin/gsed -i 's#MK_LIBDIR=\"/usr#MK_LIBDIR=\"/opt/oep#' ${TMPDIR}/check_mk_agent.solaris
+    #/usr/bin/gsed -i 's#MK_CONFDIR=\"/usr#MK_CONFDIR=\"opt/oep#' ${TMPDIR}/check_mk_agent.solaris
+    #/usr/bin/gsed -i 's#MK_LIBDIR=\"/usr#MK_LIBDIR=\"/opt/oep#' ${TMPDIR}/check_mk_agent.solaris
 }
 
 make_install() {
@@ -69,7 +69,7 @@ make_install() {
         logerr "------ Failed to create bin directory."
     logcmd mkdir -p ${DESTDIR}${PREFIX}/share/docs || \
         logerr "------ Failed to create docs directory."
-    logcmd mkdir -p ${DESTDIR}${PREFIX}/etc/check_mk_agent || \
+    logcmd mkdir -p ${DESTDIR}/opt/etc/check_mk_agent || \
         logerr "------ Failed to create etc directory."
     logcmd mkdir -p ${DESTDIR}${PREFIX}/lib/check_mk_agent || \
         logerr "------ Failed to create config directory."
@@ -77,14 +77,23 @@ make_install() {
         logerr "------ Failed to create plugins directory."
     logcmd mkdir -p ${DESTDIR}${PREFIX}/lib/check_mk_agent/local || \
         logerr "------ Failed to create local directory."
+    logcmd mkdir -p ${DESTDIR}/var/opt/oep/lib/check_mk_agent/cache || \
+        logerr "------ Failed to create local directory."
+    logcmd mkdir -p ${DESTDIR}/var/opt/oep/lib/check_mk_agent/job || \
+        logerr "------ Failed to create local directory."
 
-
-
-
-    logcmd mv ${TMPDIR}/check_mk_agent.solaris ${DESTDIR}${PREFIX}/bin/check_mk_agent || \
+    logcmd cp ${SRCDIR}/files/check_mk_agent ${DESTDIR}${PREFIX}/bin/check_mk_agent || \
         logerr "------ Failed to copy agent."
     logcmd chmod +x ${DESTDIR}${PREFIX}/bin/check_mk_agent || \
         logerr "------ Failed to make agent executable."
+
+    logcmd cp ${SRCDIR}/files/mk_inventory ${DESTDIR}${PREFIX}/lib/check_mk_agent/plugins || \
+        logerr "------ Failed to copy agent."
+    logcmd chmod +x ${DESTDIR}${PREFIX}/lib/check_mk_agent/plugins/mk_inventory || \
+        logerr "------ Failed to make agent executable."
+    
+    logcmd cp ${SRCDIR}/files/mk_inventory.cfg ${DESTDIR}/opt/etc/mk_inventory.cfg || \
+        logerr "------ Failed to copy agent."
 
     logcmd mkdir -p ${DESTDIR}/lib/svc/manifest/network || \
         logerr "------ Failed to create svc directory."
@@ -97,15 +106,11 @@ make_install() {
 
 init
 prep_build
-download_source 
 patch_source
 build
 make_install
 make_isa_stub
-prefix_updater
 make_package
-auto_publish
-cleanup_source
 clean_up
 
 # Vim hints

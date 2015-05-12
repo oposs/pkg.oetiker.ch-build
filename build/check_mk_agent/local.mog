@@ -23,7 +23,6 @@
 # Copyright 1995-2013 OETIKER+PARTNER AG All rights reserved.
 # Use is subject to license terms.
 #
-license COPYING license=GPLv3
-<transform file path=etc/opt/oep/samba/smb.conf$ -> set preserve renamenew>
+license files/license license=GPL
 <transform dir path=etc/opt$ -> set group sys>
 <transform dir path=var/opt$ -> set group sys>
