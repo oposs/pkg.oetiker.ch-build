@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
-<service_bundle type="manifest" name="smaba4-nmbd">
+<service_bundle type="manifest" name="samba4-nmbd">
 
-    <service name="network/smaba4/nmbd" type="service" version="1">
+    <service name="network/samba4/nmbd" type="service" version="1">
 
         <create_default_instance enabled="false" />
 
@@ -24,7 +24,7 @@
             <service_fmri value="svc:/system/filesystem/local" />
         </dependency>
 
-        <dependent name="smaba4-nmbd-multi-user-server" grouping="optional_all" restart_on="none">
+        <dependent name="samba4-nmbd-multi-user-server" grouping="optional_all" restart_on="none">
             <service_fmri value="svc:/milestone/multi-user-server" />
         </dependent>
 
