@@ -40,6 +40,9 @@ BUILDARCH=32
 CPPFLAGS64="$CPPFLAGS64 -D_AVL_H"
 CPPFLAGS32="$CPPFLAGS32 -D_AVL_H"
 
+BUILD_DEPENDS_IPS="oep/library/liblogging-stdlog oep/library/libestr"
+RUN_DEPENDS_IPS="oep/library/liblogging-stdlog oep/library/libestr"
+
 CONFIGURE_OPTS_32="--prefix=$PREFIX
   --includedir=$PREFIX/include
   --bindir=$PREFIX/bin/$ISAPART
