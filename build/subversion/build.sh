@@ -36,8 +36,8 @@ DESC="$SUMMARY"
 DOWNLOADURL="http://mirror.nexcess.net/apache/$PROG/$PROG-$VER.tar.gz"
 BUILDARCH=32
 
-BUILD_DEPENDS_IPS=
-RUN_DEPENDS_IPS=
+BUILD_DEPENDS_IPS="oep/apr oep/apr-util"
+RUN_DEPENDS_IPS="oep/apr oep/apr-util"
 
 #CFLAGS="-lxnet -lsocket -lnsl -lkstat -D_XOPEN_SOURCE=500 -D__EXTENSIONS__ $CFLAGS"
 
