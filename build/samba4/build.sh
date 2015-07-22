@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=samba     # App name
-VER=4.2.0      # App version
+VER=4.2.2      # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=oep/service/network/samba4 # Package name (e.g. library/foo)
@@ -49,12 +49,12 @@ CONFIGURE_OPTS="
   	--libdir=$PREFIX/lib
   	--libexecdir=$PREFIX/libexec
 	--infodir=$PREFIX/info
-  	--sysconfdir=/etc/samba
-	--with-configdir=/etc/samba
-	--with-privatedir=/etc/samba/private
-  	--localstatedir=/var/samba
-  	--sharedstatedir=/var/samba
-        --with-logfilebase=/var/log/samba
+  	--sysconfdir=/etc/opt/oep/samba
+	--with-configdir=/etc/opt/oep/samba
+	--with-privatedir=/etc/opt/oep/samba/private
+  	--localstatedir=/var/opt/oep/samba
+  	--sharedstatedir=/var/opt/oep/samba
+        --with-logfilebase=/var/opt/oep/log/samba
 	--bundled-libraries=ALL
         --with-shared-modules=nfs4_acls,vfs_zfsacl,vfs_fruit
   	--with-pammodulesdir=/usr/lib/security
@@ -81,8 +81,8 @@ service_configs() {
         $DESTDIR/lib/svc/manifest/network/samba/smbd.xml
     logcmd cp $SRCDIR/files/manifest-samba-winbindd.xml \
         $DESTDIR/lib/svc/manifest/network/samba/winbindd.xml
-    logcmd cp $SRCDIR/files/smb.conf $DESTDIR/etc/samba/smb.conf
-    logcmd mkdir $DESTDIR/var/log/samba
+    logcmd cp $SRCDIR/files/smb.conf $DESTDIR/etc/opt/oep/samba/smb.conf
+    logcmd mkdir $DESTDIR/var/opt/oep/log/samba
 }
 
 # overriding the normal install functions to get to copy the libnss stuff since

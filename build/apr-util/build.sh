@@ -1,3 +1,4 @@
+#!/usr/bin/bash
 #
 # CDDL HEADER START
 #
@@ -20,10 +21,34 @@
 # CDDL HEADER END
 #
 #
-# Copyright 1995-2013 OETIKER+PARTNER AG All rights reserved.
+# Copyright 1995-2013 OETIKER+PARTNER AG  All rights reserved.
 # Use is subject to license terms.
 #
-license COPYING license=GPLv3
-<transform file path=etc/opt/oep/samba/smb.conf$ -> set preserve renamenew>
-<transform dir path=etc/opt$ -> set group sys>
-<transform dir path=var/opt$ -> set group sys>
+# Load support functions
+. ../../lib/functions.sh
+
+PROG=apr-util     # App name
+VER=1.5.4      # App version
+VERHUMAN=$VER   # Human-readable version
+#PVER=          # Branch (set in config.sh, override here if needed)
+PKG=oep/apr-util     # Package name (e.g. library/foo)
+SUMMARY="$PROG - Apache Portable Runtime"   # One-liner, must be filled in
+DESC="$SUMMARY ($VER)"         # Longer description, must be filled in
+DOWNLOADURL="http://mirrors.gigenet.com/apache//apr/apr-util-$VER.tar.gz"
+BUILDARCH=32
+BUILDDIR=$PROG-$VER
+
+CONFIGURE_OPTS="--with-apr=$PREFIX"
+
+
+init
+download_source $PROG $PROG $VER
+patch_source
+prep_build
+build
+make_isa_stub
+make_package
+clean_up
+
+
+# vim:ts=4:sw=4:et:

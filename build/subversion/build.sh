@@ -1,3 +1,4 @@
+#!/usr/bin/bash
 #
 # CDDL HEADER START
 #
@@ -20,10 +21,41 @@
 # CDDL HEADER END
 #
 #
-# Copyright 1995-2013 OETIKER+PARTNER AG All rights reserved.
+# Copyright 1995-2014 OETIKER+PARTNER AG  All rights reserved.
 # Use is subject to license terms.
 #
-license COPYING license=GPLv3
-<transform file path=etc/opt/oep/samba/smb.conf$ -> set preserve renamenew>
-<transform dir path=etc/opt$ -> set group sys>
-<transform dir path=var/opt$ -> set group sys>
+# Load support functions
+. ../../lib/functions.sh
+
+PROG=subversion
+VER=1.8.13
+VERHUMAN=$VER
+PKG=oep/subversion
+SUMMARY="$PROG - Revision control system (v$VER)"
+DESC="$SUMMARY"
+DOWNLOADURL="http://mirror.nexcess.net/apache/$PROG/$PROG-$VER.tar.gz"
+BUILDARCH=32
+
+BUILD_DEPENDS_IPS="oep/apr oep/apr-util"
+RUN_DEPENDS_IPS="oep/apr oep/apr-util"
+
+#CFLAGS="-lxnet -lsocket -lnsl -lkstat -D_XOPEN_SOURCE=500 -D__EXTENSIONS__ $CFLAGS"
+
+CONFIGURE_OPTS=" \
+	 --without-berkeley-db \
+	 --without-apache \
+	 --without-apxs \
+ 	 --without-swig \
+"
+
+init
+download_source $PROG $PROG $VER
+patch_source
+prep_build
+build
+make_isa_stub
+make_package
+clean_up
+
+# Vim hints
+# vim:ts=4:sw=4:et:

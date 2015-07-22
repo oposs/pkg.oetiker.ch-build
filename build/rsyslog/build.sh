@@ -27,70 +27,58 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=openldap   # App name
-VER=2.4.40      # App version
-VERHUMAN=$VER   # Human-readable version
-#PVER=          # Branch (set in config.sh, override here if needed)
-PKG=oep/library/openldap # Package name (e.g. library/foo)
-SUMMARY="openldap ldap library"      # One-liner, must be filled in
-DESC="an opensource implementation of ldap with library and tools"         # Longer description, must be filled in
+PROG=rsyslog
+VER=8.10.0
+VERHUMAN=$VER
+PKG=oep/logging/rsyslog
+SUMMARY="RSYSLOG is the rocket-fast system for log processing"
+DESC="RSYSLOG is the rocket-fast system for log processing."
 
 BUILDARCH=both
+BUILDARCH=32
 
 CPPFLAGS64="$CPPFLAGS64 -D_AVL_H"
 CPPFLAGS32="$CPPFLAGS32 -D_AVL_H"
 
-CONFIGURE_OPTS="--with-tls --enable-modules --enable-crypt --without-cyrus-sasl
-  --without-subdir --enable-syslog --enable-proctitle --enable-overlays
-  --enable-accesslog --enable-lmpasswd --enable-ldap 
-  --disable-static --enable-bdb=no --enable-hdb=no --enable-mdb"
-
+BUILD_DEPENDS_IPS="oep/library/liblogging-stdlog oep/library/libestr oep/library/json-c"
+RUN_DEPENDS_IPS="oep/library/liblogging-stdlog oep/library/libestr oep/library/json-c"
 
 CONFIGURE_OPTS_32="--prefix=$PREFIX
-  --sysconfdir=/etc/opt/oep/ldap
   --includedir=$PREFIX/include
   --bindir=$PREFIX/bin/$ISAPART
   --sbindir=$PREFIX/sbin/$ISAPART
   --libdir=$PREFIX/lib
   --libexecdir=$PREFIX/libexec
-  --localstatedir=/var/opt/oep"
-
+  --enable-imsolaris"
 
 CONFIGURE_OPTS_64="--prefix=$PREFIX
-  --sysconfdir=/etc/opt/oep/ldap
   --includedir=$PREFIX/include
   --bindir=$PREFIX/bin/$ISAPART64
   --sbindir=$PREFIX/sbin/$ISAPART64
   --libdir=$PREFIX/lib/$ISAPART64
   --libexecdir=$PREFIX/libexec/$ISAPART64
-  --localstatedir=/var/opt/oep"
+  --enable-imsolaris"
 
 
-save_function make_prog make_prog_orig
-make_prog(){
-    logmsg "--- make depend"
-    logcmd $MAKE depend || \
-        logerr "--- make depend failed"
-    make_prog_orig
-}
+#DOWNLOADURL=http://mirror.switch.ch/ftp/mirror/gnupg/libgcrypt/${PROG}-${VER}.tar.gz
+
+DOWNLOADURL=http://www.rsyslog.com/files/download/rsyslog/rsyslog-8.10.0.tar.gz
 
 service_configs() {
     logmsg "Installing SMF"
-    logcmd mkdir -p $DESTDIR/lib/svc/manifest/network/ldap
-    logcmd cp $SRCDIR/files/manifest-openldap.xml \
-        $DESTDIR/lib/svc/manifest/network/ldap/openldap.xml
-    logcmd mkdir -p $DESTDIR/lib/svc/method
-    logcmd cp -a $SRCDIR/files/slapd \
-        $DESTDIR/lib/svc/method/slapd
+    logcmd mkdir -p $DESTDIR/lib/svc/manifest/system
+    logcmd cp $SRCDIR/files/rsyslogd.xml \
+        $DESTDIR/lib/svc/manifest/system/rsyslogd.xml
 }
+
 
 init
 download_source $PROG $PROG $VER
-patch_source -p0
+patch_source
 prep_build
 build
-make_isa_stub
 service_configs
+make_isa_stub
 make_package
 clean_up
 

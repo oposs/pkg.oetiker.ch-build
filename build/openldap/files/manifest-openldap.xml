@@ -29,10 +29,10 @@
         file.
 -->
 
-<service_bundle type='manifest' name='slapd'>
+<service_bundle type='manifest' name='openldap'>
 
 <service 
-        name='network/ldap/slapd'
+        name='network/ldap/openldap'
         type='service'
         version='1'>
 
@@ -83,33 +83,23 @@
         </property_group>
 
         <instance name='default' enabled='false'>
-                <method_context>
-                    <method_credential user='openldap' group='openldap' 
-                                       privileges='basic,net_privaddr'/>
-                </method_context>
-
-                <!--
+                
+		<!--
                    Make sure the data configurable property points to the
                    appropriate database directory and port number in
-                   postgresql.conf is different than the other instances.
+                   slapd.conf is different than the other instances.
                 -->
                 <property_group name='slapd' type='application'>
                         <propval name='data' type='astring'
-                           value='/var/lib/ldap' />
+                           value='/var/opt/oep/openldap-data' />
                         <propval name='config_file' type='astring'
-                           value='/etc/ldap/slapd.conf' />
+                           value='/etc/opt/oep/ldap/slapd.conf' />
                         <propval name='listen_urls' type='astring'
                            value='ldap:/// ldapi:/// ldaps:///' />
                         <propval name='pid' type='astring'
-                           value='/var/run/slapd/slapd.pid' />
-                        <propval name='piddir' type='astring'
-                           value='/var/run/slapd' />
+                           value='/var/opt/oep/run/slapd/slapd.pid' />
                         <propval name='debug_level' type='astring'
-                           value='192' />
-			<propval name='slapd_user' type='astring'
-		           value='openldap' />
-			<propval name='slapd_group' type='astring'
-		           value='openldap' />
+                           value='0' />
                 </property_group>
 
         </instance>
