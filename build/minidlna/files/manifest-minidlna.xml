@@ -28,6 +28,14 @@
             <service_fmri value='svc:/system/filesystem/local:default' />
         </dependency>
 
+        <dependency
+            name='config-file'
+            grouping='require_all'
+            restart_on='refresh'
+            type='path'>
+            <service_fmri value='file://localhost/etc/opt/oep/minidlna/minidlna.conf' />
+        </dependency>
+
         <method_context>
                 <method_credential
                         user='root'
