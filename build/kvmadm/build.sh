@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=kvmadm # App name
-VER=0.8.2    # App version
+VER=0.9.3    # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=oep/kvmadm # Package name (e.g. library/foo)
@@ -51,9 +51,11 @@ prep_build
 gmake install DESTDIR=$DESTDIR
 
 # create symbolic link to standard bin dir
-logcmd ln -s /opt/oep/$PROG/bin/$PROG /opt/oep/bin/$PROG
+logcmd mkdir -p $DESTDIR/opt/oep/bin
+logcmd ln -s $DESTDIR/opt/oep/$PROG/bin/$PROG $DESTDIR/opt/oep/bin/$PROG
 # create symbolic link to man page
-logcmd ln -s /opt/oep/$PROG/share/man/man1/kvmadm.1 /opt/oep/share/man/man1/kvmadm.1
+logcmd mkdir -p $DESTDIR/opt/oep/share/man/man1
+logcmd ln -s $DESTDIR/opt/oep/$PROG/share/man/man1/${PROG}.1 $DESTDIR/opt/oep/share/man/man1/${PROG}.1
 
 logmsg "Installing SMF"
 logcmd mkdir -p $DESTDIR/lib/svc/manifest/oep/kvmadm
