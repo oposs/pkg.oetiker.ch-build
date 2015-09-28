@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=libvorbis
-VER=1.3.4
+VER=1.3.5
 VERHUMAN=$VER
 PKG=oep/audio/libvorbis
 SUMMARY="$PROG - Vorbis Audio Compression (v$VER)"

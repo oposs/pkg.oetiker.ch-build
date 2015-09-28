@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=flac
-VER=1.3.0
+VER=1.3.1
 VERHUMAN=$VER
 PKG=oep/audio/flac
 SUMMARY="$PROG - Free Lossless Audio Codec (v$VER)"

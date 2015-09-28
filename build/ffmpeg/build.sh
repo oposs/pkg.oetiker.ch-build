@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=ffmpeg
-VER=2.4.2
+VER=2.8
 VERHUMAN=$VER
 PKG=oep/multimedia/ffmpeg
 SUMMARY="$PROG - The Leading Multimedia Framework (v$VER)"

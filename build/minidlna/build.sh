@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=minidlna
-VER=1.1.4
+VER=1.1.5
 VERHUMAN=$VER
 PKG=oep/multimedia/minidlna
 SUMMARY="MiniDLNA - DLNA/UPnP-AV media server (v$VER)"
