@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=libav
-VER=11
+VER=11.4
 VERHUMAN=$VER
 PKG=oep/multimedia/libav
 SUMMARY="$PROG - high-performance libraries for dealing with multimedia formats of all sorts (v$VER)"
