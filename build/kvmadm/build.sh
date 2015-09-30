@@ -59,7 +59,7 @@ logcmd ln -s /opt/oep/$PROG/share/man/man1/${PROG}.1 $DESTDIR/opt/oep/share/man/
 
 logmsg "Installing SMF"
 logcmd mkdir -p $DESTDIR/lib/svc/manifest/oep/kvmadm
-logcmd cp $DESTDIR/opt/oep/share/kvmadm/smf/system-kvm.xml $DESTDIR/lib/svc/manifest/oep/kvmadm
+logcmd cp $DESTDIR/opt/oep/kvmadm/share/kvmadm/smf/system-kvm.xml $DESTDIR/lib/svc/manifest/oep/kvmadm
 
 make_package
 clean_up
