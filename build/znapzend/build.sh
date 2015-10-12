@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=znapzend # App name
-VER=0.14.0    # App version
+VER=0.14.1    # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=oep/znapzend # Package name (e.g. library/foo)
@@ -44,12 +44,13 @@ pushd $TMPDIR
 [ -d $PROG ] && rm -rf $PROG
 mkdir $PROG
 cd $PROG
-git clone https://github.com/oetiker/znapzend.git
-cd znapzend
+git clone https://github.com/oetiker/znapzend.git znapzend-$VER
+cd znapzend-$VER
+git checkout v$VER
 prep_build
-./configure --prefix=$DESTDIR/opt/oep
+./configure --prefix=/opt/oep
 gmake get-thirdparty-modules
-gmake install
+gmake install DESTDIR=$DESTDIR
 
 logmsg "Installing SMF"
 logcmd mkdir -p $DESTDIR/lib/svc/manifest/oep/znapzend
