@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
+<service_bundle type="manifest" name="smartd">
+
+<service 
+	name="oep/system/storage/smartd"
+	type="service" 
+	version="1">
+    
+        <create_default_instance 
+            enabled="false" />
+
+        <single_instance/>
+
+        <dependency
+            name='filesystem'
+            grouping='require_all'
+            restart_on='none'
+            type='service'>
+            <service_fmri value='svc:/system/filesystem/local:default' />
+        </dependency>
+
+        <dependency
+            name='config-file'
+            grouping='require_all'
+            restart_on='refresh'
+            type='path'>
+            <service_fmri value='file://localhost/etc/opt/oep/smartd.conf' />
+        </dependency>
+
+        <method_context>
+                <method_credential
+                        user='root'
+                        group='root' />
+        </method_context>
+
+        <exec_method 
+		type="method" 
+		name="start" 
+		exec="/opt/oep/sbin/smartd --pidfile /var/opt/oep/run/smartd.pid"
+		timeout_seconds="60" />
+
+        <exec_method
+		type="method"
+		name="stop"
+		exec=":kill"
+		timeout_seconds="60" />
+
+        <stability 
+        	value="Unstable" />
+
+        <template>
+            <common_name>
+                <loctext xml:lang="C">
+                smartmontools - Control and monitor storage systems using SMART
+                </loctext>
+            </common_name>
+        </template>
+</service>
+</service_bundle>

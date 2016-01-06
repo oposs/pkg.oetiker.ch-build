@@ -32,38 +32,37 @@ VER=6.4
 VERHUMAN=$VER
 PKG=oep/system/storage/smartmontools
 SUMMARY="Control and monitor storage systems using SMART"
-DESC="Control and monitor storage systems using SMART"
+DESC="$SUMMARY"
+MIRROR=sourceforge.net
+DLDIR=projects/$PROG/files/$PROG/$VER
 
-BUILDARCH=both
-BUILDARCH=32
+BUILDARCH=64
 
 CPPFLAGS64="$CPPFLAGS64 -D_AVL_H"
-CPPFLAGS32="$CPPFLAGS32 -D_AVL_H"
-
-CONFIGURE_OPTS_32="--prefix=$PREFIX
-  --includedir=$PREFIX/include
-  --bindir=$PREFIX/bin/$ISAPART
-  --sbindir=$PREFIX/sbin/$ISAPART
-  --libdir=$PREFIX/lib
-  --libexecdir=$PREFIX/libexec"
 
 CONFIGURE_OPTS_64="--prefix=$PREFIX
-  --includedir=$PREFIX/include
-  --bindir=$PREFIX/bin/$ISAPART64
-  --sbindir=$PREFIX/sbin/$ISAPART64
-  --libdir=$PREFIX/lib/$ISAPART64
-  --libexecdir=$PREFIX/libexec/$ISAPART64"
+    --sysconfdir=/etc/$PREFIX
+    --includedir=$PREFIX/include
+    --bindir=$PREFIX/bin/$ISAPART64
+    --sbindir=$PREFIX/sbin/$ISAPART64
+    --libdir=$PREFIX/lib/$ISAPART64
+    --libexecdir=$PREFIX/libexec/$ISAPART64"
 
-
-
-DOWNLOADURL=http://downloads.sourceforge.net/project/smartmontools/smartmontools/6.4/smartmontools-6.4.tar.gz
+service_configs() {
+    logmsg "--- Copying SMF manifest"
+    logcmd mkdir -p $DESTDIR/lib/svc/manifest/system/storage
+    logcmd cp $SRCDIR/files/manifest-smartd.xml \
+    $DESTDIR/lib/svc/manifest/system/storage/smartd.xml ||
+    logerr "Failed to copy SMF manifest"
+}
 
 init
-download_source $PROG $PROG $VER
+download_source $DLDIR $PROG $VER
 patch_source
 prep_build
 build
 make_isa_stub
+service_configs
 make_package
 clean_up
 
