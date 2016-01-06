@@ -41,7 +41,7 @@ BUILDARCH=64
 CPPFLAGS64="$CPPFLAGS64 -D_AVL_H"
 
 CONFIGURE_OPTS_64="--prefix=$PREFIX
-    --sysconfdir=/etc/$PREFIX
+    --sysconfdir=/etc$PREFIX/smartmontools
     --includedir=$PREFIX/include
     --bindir=$PREFIX/bin/$ISAPART64
     --sbindir=$PREFIX/sbin/$ISAPART64
@@ -63,6 +63,7 @@ prep_build
 build
 make_isa_stub
 service_configs
+chown root:sys $DESTDIR/etc/opt
 make_package
 clean_up
 

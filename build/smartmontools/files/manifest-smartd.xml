@@ -25,7 +25,7 @@
             grouping='require_all'
             restart_on='refresh'
             type='path'>
-            <service_fmri value='file://localhost/etc/opt/oep/smartd.conf' />
+            <service_fmri value='file://localhost/etc/opt/oep/smartmontools/smartd.conf' />
         </dependency>
 
         <method_context>
