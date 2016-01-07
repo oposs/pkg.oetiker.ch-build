@@ -37,7 +37,7 @@
         <exec_method 
 		type="method" 
 		name="start" 
-		exec="/opt/oep/sbin/smartd --pidfile /var/opt/oep/run/smartd.pid --savestates=/var/opt/oep/smartmontools/"
+		exec="/opt/oep/sbin/smartd --pidfile=/var/opt/oep/run/smartd.pid --savestates=/var/opt/oep/smartmontools/"
 		timeout_seconds="60" />
 
         <exec_method
