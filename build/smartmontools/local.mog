@@ -1,2 +1,3 @@
 license COPYING license=lgpl
 <transform dir path=etc/opt$ -> set group sys>
+<transform dir path=var/opt$ -> set group sys>
