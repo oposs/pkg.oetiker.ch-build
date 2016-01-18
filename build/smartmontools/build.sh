@@ -61,9 +61,9 @@ download_source $DLDIR $PROG $VER
 patch_source
 prep_build
 build
+mkdir -p $DESTDIR/var/opt/oep/run $DESTDIR/var/opt/oep/smartmontools
 make_isa_stub
 service_configs
-chown root:sys $DESTDIR/etc/opt
 make_package
 clean_up
 
