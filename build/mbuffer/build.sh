@@ -28,24 +28,17 @@
 . ../../lib/functions.sh
 
 PROG=mbuffer
-VER=20150412
+VER=20151002
 VERHUMAN=$VER
 PKG=oep/system/mbuffer
 SUMMARY="mbuffer - measuring buffer"
-DESC="mbuffer - measuring buffer"
+DESC="$SUMMARY"
+MIRROR=www.maier-komor.de
+DLDIR=software/$PROG
 
-BUILDARCH=both
-BUILDARCH=32
+BUILDARCH=64
 
 CPPFLAGS64="$CPPFLAGS64 -D_AVL_H"
-CPPFLAGS32="$CPPFLAGS32 -D_AVL_H"
-
-CONFIGURE_OPTS_32="--prefix=$PREFIX
-  --includedir=$PREFIX/include
-  --bindir=$PREFIX/bin/$ISAPART
-  --sbindir=$PREFIX/sbin/$ISAPART
-  --libdir=$PREFIX/lib
-  --libexecdir=$PREFIX/libexec"
 
 CONFIGURE_OPTS_64="--prefix=$PREFIX
   --includedir=$PREFIX/include
@@ -54,12 +47,8 @@ CONFIGURE_OPTS_64="--prefix=$PREFIX
   --libdir=$PREFIX/lib/$ISAPART64
   --libexecdir=$PREFIX/libexec/$ISAPART64"
 
-
-
-DOWNLOADURL=http://www.maier-komor.de/software/mbuffer/mbuffer-20150412.tgz
-
 init
-download_source $PROG $PROG $VER
+download_source $DLDIR $PROG $VER
 patch_source
 prep_build
 build
