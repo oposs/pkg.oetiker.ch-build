@@ -41,7 +41,7 @@ BUILD_DEPENDS_IPS="database/sqlite-3 oep/multimedia/ffmpeg oep/graphics/libexif 
 RUN_DEPENDS_IPS="database/sqlite-3 oep/multimedia/ffmpeg oep/graphics/libexif oep/audio/libid3tag oep/audio/libvorbis oep/audio/flac oep/graphics/libjpeg"
 
 CPPFLAGS64="$CPPFLAGS64 -I$PREFIX/include -I/usr/include  -I$SRCDIR/files"
-LDFLAGS64="$LDFLAGS64 -L/$PREFIX/lib/$ISAPART64 -L/usr/lib/$ISAPART64 -R/$PREFIX/lib/$ISAPART64 -lsocket -lnsl -lsendfile"
+LDFLAGS64="$LDFLAGS64 -L$PREFIX/lib/$ISAPART64 -L/usr/lib/$ISAPART64 -R$PREFIX/lib/$ISAPART64 -lsocket -lnsl -lsendfile"
 
 default_config() {
     logmsg "--- Copying default config file"
