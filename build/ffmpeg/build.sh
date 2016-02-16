@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=ffmpeg
-VER=2.8
+VER=3.0
 VERHUMAN=$VER
 PKG=oep/multimedia/ffmpeg
 SUMMARY="$PROG - The Leading Multimedia Framework (v$VER)"
@@ -40,14 +40,14 @@ BUILDARCH=both
 BUILD_DEPENDS_IPS="oep/developer/yasm"
 RUN_DEPENDS_IPS=
 
-CPPFLAGS32="-I/opt/oep/include"
-LDFLAGS32="-L/opt/oep/lib -R/opt/oep/lib"
+CPPFLAGS32="$CPPFLAGS32 -I$PREFIX/include"
+LDFLAGS32="$LDFLAGS32 -L$PREFIX/lib/$ISAPART32 -R$PREFIX/lib/$ISAPART32"
 
-CPPFLAGS64="$CPPFLAGS64 -I/opt/oep/include/$ISAPART64"
-LDFLAGS64="$LDFLAGS64 -L/opt/oep/lib/$ISAPART64 -R/opt/oep/lib/$ISAPART64"
+CPPFLAGS64="$CPPFLAGS64 -I$PREFIX/include/$ISAPART64"
+LDFLAGS64="$LDFLAGS64 -L$PREFIX/lib/$ISAPART64 -R$PREFIX/lib/$ISAPART64"
 
 CONFIGURE_OPTS="
-    --prefix=/opt/oep
+    --prefix=$PREFIX
     --enable-shared" 
 
 CONFIGURE_OPTS_32="

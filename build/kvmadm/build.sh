@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=kvmadm # App name
-VER=0.10.0    # App version
+VER=0.10.2    # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=oep/kvmadm # Package name (e.g. library/foo)
@@ -47,7 +47,8 @@ cd $PROG
 curl -L https://github.com/hadfl/kvmadm/releases/download/v$VER/kvmadm-$VER.tar.gz | gtar zxf -
 cd kvmadm-$VER
 prep_build
-./configure --prefix=/opt/oep/$PROG --disable-svcimport
+./configure --prefix=/opt/oep/$PROG --enable-svcinstall=/lib/svc/manifest/oep/$PROG
+gmake
 gmake install DESTDIR=$DESTDIR
 
 # create symbolic link to standard bin dir
@@ -56,10 +57,6 @@ logcmd ln -s /opt/oep/$PROG/bin/$PROG $DESTDIR/opt/oep/bin/$PROG
 # create symbolic link to man page
 logcmd mkdir -p $DESTDIR/opt/oep/share/man/man1
 logcmd ln -s /opt/oep/$PROG/share/man/man1/${PROG}.1 $DESTDIR/opt/oep/share/man/man1/${PROG}.1
-
-logmsg "Installing SMF"
-logcmd mkdir -p $DESTDIR/lib/svc/manifest/oep/kvmadm
-logcmd cp $DESTDIR/opt/oep/kvmadm/share/kvmadm/smf/system-kvm.xml $DESTDIR/lib/svc/manifest/oep/kvmadm
 
 make_package
 clean_up
