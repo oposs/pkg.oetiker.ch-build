@@ -45,7 +45,7 @@
         <exec_method 
 		type="method" 
 		name="start" 
-		exec="/opt/oep/sbin/minidlnad -f /etc/opt/oep/minidlna/minidlna.conf"
+		exec="/opt/oep/sbin/minidlnad -R -f /etc/opt/oep/minidlna/minidlna.conf"
 		timeout_seconds="60" />
 
         <exec_method

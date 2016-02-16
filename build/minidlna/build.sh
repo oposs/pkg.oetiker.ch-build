@@ -35,13 +35,13 @@ SUMMARY="MiniDLNA - DLNA/UPnP-AV media server (v$VER)"
 DESC="$SUMMARY"
 MIRROR=sourceforge.net
 DLDIR=projects/$PROG/files/$PROG/$VER
-BUILDARCH=32
+BUILDARCH=64
 
 BUILD_DEPENDS_IPS="database/sqlite-3 oep/multimedia/ffmpeg oep/graphics/libexif oep/audio/libid3tag oep/audio/libvorbis oep/audio/flac oep/graphics/libjpeg"
 RUN_DEPENDS_IPS="database/sqlite-3 oep/multimedia/ffmpeg oep/graphics/libexif oep/audio/libid3tag oep/audio/libvorbis oep/audio/flac oep/graphics/libjpeg"
 
-CPPFLAGS32="-I/opt/oep/include -I/usr/include  -I$SRCDIR/files"
-LDFLAGS32="-L/opt/oep/lib -L/usr/lib -R/opt/oep/lib -lsocket -lnsl -lsendfile"
+CPPFLAGS64="$CPPFLAGS64 -I$PREFIX/include -I/usr/include  -I$SRCDIR/files"
+LDFLAGS64="$LDFLAGS64 -L$PREFIX/lib/$ISAPART64 -L/usr/lib/$ISAPART64 -R$PREFIX/lib/$ISAPART64 -lsocket -lnsl -lsendfile"
 
 default_config() {
     logmsg "--- Copying default config file"
