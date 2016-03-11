@@ -1,0 +1,29 @@
+--- minidlna-1.1.5/minissdp.c	    Fri Mar 11 12:39:10 2016
++++ minidlna-1.1.5/minissdp.c.fix	Fri Mar 11 12:39:51 2016
+@@ -106,7 +106,7 @@
+ 
+ 	if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR, &i, sizeof(i)) < 0)
+ 		DPRINTF(E_WARN, L_SSDP, "setsockopt(udp, SO_REUSEADDR): %s\n", strerror(errno));
+-#ifdef __linux__
++#ifdef __unix__
+ 	if (setsockopt(s, IPPROTO_IP, IP_PKTINFO, &i, sizeof(i)) < 0)
+ 		DPRINTF(E_WARN, L_SSDP, "setsockopt(udp, IP_PKTINFO): %s\n", strerror(errno));
+ #endif
+@@ -490,7 +490,7 @@
+ 	int i;
+ 	char *st = NULL, *mx = NULL, *man = NULL, *mx_end = NULL;
+ 	int man_len = 0;
+-#ifdef __linux__
++#ifdef __unix__
+ 	char cmbuf[CMSG_SPACE(sizeof(struct in_pktinfo))];
+ 	struct iovec iovec = {
+ 		.iov_base = bufr,
+@@ -651,7 +651,7 @@
+ 		else if (st && (st_len > 0))
+ 		{
+ 			int l;
+-#ifdef __linux__
++#ifdef __unix__
+ 			char host[40] = "127.0.0.1";
+ 			struct cmsghdr *cmsg;
+ 
