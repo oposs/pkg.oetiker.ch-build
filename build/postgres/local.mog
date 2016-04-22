@@ -1,0 +1,4 @@
+license COPYRIGHT license=postgresql
+group groupname=postgres
+user username=postgres group=postgres
+<transform file path=opt/oep/pgsql/(lib|bin)/ -> set restart_fmri svc:/oep/database/postgresql:default>
