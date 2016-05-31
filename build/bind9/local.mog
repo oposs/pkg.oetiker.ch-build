@@ -1,0 +1,7 @@
+group groupname=bind9
+user username=bind9 group=bind9 gecos-field="Bind User" login-shell=/bin/false home-dir=/etc/opt/oep/bind9
+<transform dir path=(etc|var)/opt$ -> set group sys>
+<transform file path=etc/opt/oep/bind9/.* -> set preserve renamenew>
+<transform file path=var/opt/oep/bind9/named/.* -> set preserve renamenew>
+<transform file path=var/opt/oep/bind9/named/master/.* -> set preserve true>
+<transform file path=var/opt/oep/bind9/named/rev/.* -> set preserve true>
