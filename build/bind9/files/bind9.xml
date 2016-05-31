@@ -74,6 +74,11 @@
                         configuration file to be used. The property is similar
                         to named(1M) command line option "-c"
                 -->
+                <propval name="user_name" type="astring" value="" />
+                <!--
+                        user_name: specify the user bind should run as. The property
+                        lets you configure the named(1M) command line option "-u"
+                -->
                 <propval name="configuration_file" type="astring" value="" />
                 <!--
                         ip_interfaces: specifies which IP transport BIND will

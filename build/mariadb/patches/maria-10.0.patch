@@ -1,0 +1,84 @@
+diff -ur mariadb-10.0.25/CMakeLists.txt mariadb-10.0.25.patched/CMakeLists.txt
+--- mariadb-10.0.25/CMakeLists.txt	Thu Apr 28 20:27:44 2016
++++ mariadb-10.0.25.patched/CMakeLists.txt	Thu May 12 10:16:20 2016
+@@ -156,6 +156,7 @@
+   SET(WITHOUT_DYNAMIC_PLUGINS 1)
+ ENDIF()
+ OPTION(ENABLED_PROFILING "Enable profiling" ON)
++OPTION(ENABLE_DTRACE "Include support for DTrace probes" OFF)
+ OPTION(CYBOZU "" OFF)
+ OPTION(BACKUP_TEST "" OFF)
+ OPTION(WITHOUT_SERVER OFF)
+diff -ur mariadb-10.0.25/cmake/dtrace.cmake mariadb-10.0.25.patched/cmake/dtrace.cmake
+--- mariadb-10.0.25/cmake/dtrace.cmake	Thu Apr 28 20:27:44 2016
++++ mariadb-10.0.25.patched/cmake/dtrace.cmake	Thu May 12 10:17:46 2016
+@@ -40,10 +40,9 @@
+  ENDIF()
+ 
+  # On FreeBSD, dtrace does not handle userland tracing yet
+- IF(DTRACE AND NOT CMAKE_SYSTEM_NAME MATCHES "FreeBSD"
+-     AND NOT BUGGY_GCC_NO_DTRACE_MODULES
+-     AND NOT BUGGY_LINUX_DTRACE) 
+-   SET(ENABLE_DTRACE ON CACHE BOOL "Enable dtrace")
++ IF(ENABLE_DTRACE AND (CMAKE_SYSTEM_NAME MATCHES "FreeBSD"
++    OR BUGGY_GCC_NO_DTRACE_MODULES OR NOT DTRACE))
++   MESSAGE(FATAL_ERROR "dtrace is not supported on this system")
+  ENDIF()
+  SET(HAVE_DTRACE ${ENABLE_DTRACE})
+  IF(CMAKE_SYSTEM_NAME MATCHES "SunOS")
+diff -ur mariadb-10.0.25/cmake/plugin.cmake mariadb-10.0.25.patched/cmake/plugin.cmake
+--- mariadb-10.0.25/cmake/plugin.cmake	Thu Apr 28 20:27:44 2016
++++ mariadb-10.0.25.patched/cmake/plugin.cmake	Thu May 12 10:18:58 2016
+@@ -21,6 +21,7 @@
+ # [STORAGE_ENGINE]
+ # [MANDATORY|DEFAULT]
+ # [STATIC_ONLY|DYNAMIC_ONLY]
++# [DTRACE_INSTRUMENTED]
+ # [MODULE_OUTPUT_NAME module_name]
+ # [STATIC_OUTPUT_NAME static_name]
+ # [RECOMPILE_FOR_EMBEDDED]
+@@ -30,7 +31,7 @@
+ MACRO(MYSQL_ADD_PLUGIN)
+   MYSQL_PARSE_ARGUMENTS(ARG
+     "LINK_LIBRARIES;DEPENDENCIES;MODULE_OUTPUT_NAME;STATIC_OUTPUT_NAME;COMPONENT;CONFIG"
+-    "STORAGE_ENGINE;STATIC_ONLY;MODULE_ONLY;MANDATORY;DEFAULT;DISABLED;RECOMPILE_FOR_EMBEDDED"
++    "STORAGE_ENGINE;STATIC_ONLY;MODULE_ONLY;MANDATORY;DEFAULT;DISABLED;RECOMPILE_FOR_EMBEDDED;DTRACE_INSTRUMENTED"
+     ${ARGN}
+   )
+   
+diff -ru mariadb-10.0.25/sql/item_cmpfunc.h mariadb-10.0.25.patched/sql/item_cmpfunc.h
+--- mariadb-10.0.25/sql/item_cmpfunc.h	Thu Apr 28 20:27:47 2016
++++ mariadb-10.0.25.patched/sql/item_cmpfunc.h	Mon May 23 14:51:05 2016
+@@ -26,7 +26,7 @@
+ #include "thr_malloc.h"                         /* sql_calloc */
+ #include "item_func.h"             /* Item_int_func, Item_bool_func */
+ #define PCRE_STATIC 1             /* Important on Windows */
+-#include "pcre.h"                 /* pcre header file */
++#include <pcre.h>                 /* pcre header file */
+ 
+ extern Item_result item_cmp_type(Item_result a,Item_result b);
+ class Item_bool_func2;
+diff -ru mariadb-10.0.25/storage/connect/filamvct.cpp mariadb-10.0.25.patched/storage/connect/filamvct.cpp
+--- mariadb-10.0.25/storage/connect/filamvct.cpp	Thu Apr 28 20:27:48 2016
++++ mariadb-10.0.25.patched/storage/connect/filamvct.cpp	Mon May 23 15:22:10 2016
+@@ -67,7 +67,7 @@
+ 
+ #if defined(UNIX)
+ // Add dummy strerror  (NGC)
+-char *strerror(int num);
++//char *strerror(int num);
+ #endif   // UNIX
+ 
+ /***********************************************************************/
+diff -ru mariadb-10.0.25/storage/connect/tabvct.cpp mariadb-10.0.25.patched/storage/connect/tabvct.cpp
+--- mariadb-10.0.25/storage/connect/tabvct.cpp	Thu Apr 28 20:27:49 2016
++++ mariadb-10.0.25.patched/storage/connect/tabvct.cpp	Mon May 23 15:22:48 2016
+@@ -73,7 +73,7 @@
+ 
+ #if defined(UNIX)
+ //add dummy strerror   (NGC)
+-char *strerror(int num);
++//char *strerror(int num);
+ #endif   // UNIX
+ 
+ /***********************************************************************/

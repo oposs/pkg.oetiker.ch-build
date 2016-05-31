@@ -1,0 +1,26 @@
+diff --git a/storage/connect/filamvct.cpp b/storage/connect/filamvct.cpp
+index fdc5433..89d2991 100755
+--- a/storage/connect/filamvct.cpp
++++ b/storage/connect/filamvct.cpp
+@@ -67,7 +67,7 @@ static int num_write;
+ 
+ #if defined(UNIX)
+ // Add dummy strerror  (NGC)
+-char *strerror(int num);
++//char *strerror(int num);
+ #endif   // UNIX
+ 
+ /***********************************************************************/
+diff --git a/storage/connect/tabvct.cpp b/storage/connect/tabvct.cpp
+index e788529..d4345f0 100644
+--- a/storage/connect/tabvct.cpp
++++ b/storage/connect/tabvct.cpp
+@@ -73,7 +73,7 @@
+ 
+ #if defined(UNIX)
+ //add dummy strerror   (NGC)
+-char *strerror(int num);
++//char *strerror(int num);
+ #endif   // UNIX
+ 
+ /***********************************************************************/
