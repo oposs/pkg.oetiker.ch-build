@@ -20,10 +20,9 @@ I=`/usr/bin/basename $0`
 case "$method" in
 'start')
     configuration_file=/etc/opt/oep/bind9/named.conf
-    user_name=bind9
-    cmdopts=""
+    cmdopts="-u bind9"
     properties="debug_level ip_interfaces listen_on_port
-	threads chroot_dir configuration_file user_name server"
+	threads chroot_dir configuration_file server"
 
     for prop in $properties
     do
@@ -70,10 +69,6 @@ case "$method" in
 	'configuration_file')
 	    cmdopts="${cmdopts} -c ${value}"
 	    configuration_file=${value};
-	    ;;
-	'user_name')
-	    cmdopts="${cmdopts} -u ${value}"
-	    user_name=${value};
 	    ;;
 	'server')
 	    set -- `echo ${value} | /usr/bin/sed -e  's/\\\\//g'`

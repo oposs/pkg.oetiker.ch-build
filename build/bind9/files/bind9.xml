@@ -40,8 +40,8 @@
                               Permit use of chroot(2).
                 -->
                 <method_credential
-                  user="root"
-                  group="root"
+                  user="bind9"
+                  group="bind9"
                   privileges="basic,!proc_session,!proc_info,!file_link_any,net_privaddr,file_dac_read,file_dac_search,sys_resource,proc_chroot" />
                 </method_context>
             </exec_method>
@@ -73,11 +73,6 @@
                         configuration_file: specifies an alternative
                         configuration file to be used. The property is similar
                         to named(1M) command line option "-c"
-                -->
-                <propval name="user_name" type="astring" value="" />
-                <!--
-                        user_name: specify the user bind should run as. The property
-                        lets you configure the named(1M) command line option "-u"
                 -->
                 <propval name="configuration_file" type="astring" value="" />
                 <!--
