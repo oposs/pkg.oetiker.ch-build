@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=samba     # App name
-VER=4.2.2      # App version
+VER=4.4.4      # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=oep/service/network/samba4 # Package name (e.g. library/foo)
@@ -36,62 +36,63 @@ SUMMARY="$PROG - CIFS server and domain controller"      # One-liner, must be fi
 DESC="$SUMMARY ($VER)"         # Longer description, must be filled in
 DOWNLOADURL="http://ftp.samba.org/pub/samba/samba-$VER.tar.gz"
 #BUILDARCH=both (64 keeps crashing)
-BUILDARCH=32
+BUILDARCH=64
 BUILDDIR=$PROG-$VER
 BUILD_DEPENDS_IPS="oep/library/openldap oep/library/security/libgpg-error oep/library/security/libgcrypt"
 RUN_DEPENDS_IPS="oep/library/security/libgpg-error oep/library/security/libgcrypt"
 
+PREFIX=/opt/oep/samba
+CONFIGURE_OPTS_64="
+        --prefix=$PREFIX
+        --bindir=$PREFIX/bin/$ISAPART64
+        --sbindir=$PREFIX/sbin/$ISAPART64
+        --libdir=$PREFIX/lib/$ISAPART64
+  	--with-pammodulesdir=/usr/lib/security/$ISAPART64
+"                                                    
 CONFIGURE_OPTS="
-  	--prefix=$PREFIX
-  	--bindir=$PREFIX/bin
-  	--sbindir=$PREFIX/sbin
-	--mandir=$PREFIX/share/man
-  	--libdir=$PREFIX/lib
-  	--libexecdir=$PREFIX/libexec
-	--infodir=$PREFIX/info
-  	--sysconfdir=/etc/opt/oep/samba
-	--with-configdir=/etc/opt/oep/samba
-	--with-privatedir=/etc/opt/oep/samba/private
-  	--localstatedir=/var/opt/oep/samba
-  	--sharedstatedir=/var/opt/oep/samba
-        --with-logfilebase=/var/opt/oep/log/samba
-	--bundled-libraries=ALL
-        --with-shared-modules=nfs4_acls,vfs_zfsacl,vfs_fruit
-  	--with-pammodulesdir=/usr/lib/security
+  	--sysconfdir=/etc/opt/oep/$PROG
+	--with-configdir=/etc/opt/oep/$PROG
+	--with-privatedir=/etc/opt/oep/$PROG/private
+  	--localstatedir=/var/opt/oep/$PROG
+  	--sharedstatedir=/var/opt/oep/$PROG
+        --with-logfilebase=/var/opt/oep/log/$PROG
         --with-piddir=/var/run
-        --with-winbind
-        --with-ads
-	--with-ldap
-	--with-pam
-	--with-iconv
-        --with-acl-support
-        --with-syslog
-        --with-aio-support
-	--enable-fhs
-	--with-quotas
 	--without-ad-dc
-        --with-automount"
+	--with-ldap
+	--with-iconv
+        --with-acl-support        
+        --with-winbind
+	--with-pam
+        --with-syslog
+	--with-quotas
+        --with-automount
+"
 
 service_configs() {
     logmsg "Installing SMF"
-    logcmd mkdir -p $DESTDIR/lib/svc/manifest/network/samba
+    logcmd mkdir -p $DESTDIR/lib/svc/manifest/oep/network
     logcmd cp $SRCDIR/files/manifest-samba-nmbd.xml \
-        $DESTDIR/lib/svc/manifest/network/samba/nmbd.xml
+        $DESTDIR/lib/svc/manifest/oep/network/samba-nmbd.xml
     logcmd cp $SRCDIR/files/manifest-samba-smbd.xml \
-        $DESTDIR/lib/svc/manifest/network/samba/smbd.xml
+        $DESTDIR/lib/svc/manifest/oep/network/samba-smbd.xml
     logcmd cp $SRCDIR/files/manifest-samba-winbindd.xml \
-        $DESTDIR/lib/svc/manifest/network/samba/winbindd.xml
+        $DESTDIR/lib/svc/manifest/oep/network/samba-winbindd.xml
     logcmd cp $SRCDIR/files/smb.conf $DESTDIR/etc/opt/oep/samba/smb.conf
     logcmd mkdir $DESTDIR/var/opt/oep/log/samba
 }
 
-# overriding the normal install functions to get to copy the libnss stuff since
-# samba does not seem to install it
-make_install32() {
-    make_install
-    rm -rf $TMPDIR/$PROG-$VER/*/*.o
+applinks_configs() {
+    logmsg "Adding Links"
+    logcmd mkdir -p $DESTDIR/opt/oep/bin
+    logcmd cd $DESTDIR/opt/oep/bin
+    logcmd ln -s ../$PROG/bin/* .
+    logcmd rm amd64
+    logcmd mkdir -p $DESTDIR/usr/lib/$ISAPART64
+    logcmd cd $DESTDIR/usr/lib/$ISAPART64
+    logcmd ln -s ../../../opt/oep/samba/lib/$ISAPART64/nss_winbind.so.1 nss_winbind.so
 }
-    
+
+ 
 
 rm -rf $TMPDIR/$PROG-$VER || true
 
@@ -102,6 +103,7 @@ prep_build
 build
 make_isa_stub
 service_configs
+applinks_configs
 make_package
 clean_up
 

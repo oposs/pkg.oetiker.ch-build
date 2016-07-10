@@ -2,7 +2,7 @@
 <!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
 <service_bundle type="manifest" name="samba4-nmbd">
 
-    <service name="network/samba4/nmbd" type="service" version="1">
+    <service name="oep/network/samba4/nmbd" type="service" version="1">
 
         <create_default_instance enabled="false" />
 
@@ -28,9 +28,9 @@
             <service_fmri value="svc:/milestone/multi-user-server" />
         </dependent>
 
-        <exec_method type="method" name="start" exec="/opt/oep/sbin/nmbd -D" timeout_seconds="170" />
+        <exec_method type="method" name="start" exec="/opt/oep/samba/sbin/nmbd -D" timeout_seconds="170" />
 
-        <exec_method type="method" name="stop" exec="/usr/bin/kill `cat /var/opt/oep/samba/locks/nmbd.pid`" timeout_seconds="60" />
+        <exec_method type="method" name="stop" exec=":kill" timeout_seconds="60" />
 
         <stability value="Unstable" />
 
