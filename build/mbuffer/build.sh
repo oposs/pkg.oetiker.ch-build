@@ -28,14 +28,13 @@
 . ../../lib/functions.sh
 
 PROG=mbuffer
-VER=20151002
+VER=20160613
 VERHUMAN=$VER
 PKG=oep/system/mbuffer
 SUMMARY="mbuffer - measuring buffer"
 DESC="$SUMMARY"
-MIRROR=www.maier-komor.de
+DOWNLOADURL=http://www.maier-komor.de/software/mbuffer/mbuffer-$VER.tgz
 DLDIR=software/$PROG
-
 BUILDARCH=64
 
 CPPFLAGS64="$CPPFLAGS64 -D_AVL_H"
