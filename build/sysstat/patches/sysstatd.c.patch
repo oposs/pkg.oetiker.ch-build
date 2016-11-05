@@ -1,0 +1,43 @@
+--- sysstat/sysstatd.c      2016-11-05 18:10:47.187575483 +0000
++++ sysstat/sysstatd.c.fix  2016-11-05 18:12:32.248294617 +0000
+@@ -33,7 +33,7 @@
+ #include "userstat.h"
+ 
+ 
+-int Localmode = 0, Userstats = 1, Diskstats = 1, VerboseZFS = 0;
++int Localmode = 1, Userstats = 1, Diskstats = 1, VerboseZFS = 0;
+ unsigned Interval = 1;
+ 
+ 
+@@ -46,7 +46,6 @@
+ 	"-h        : display this help screen and exit\n"
+ 	"-k        : kill sysstat's daemon\n"
+ 	"-l        : operate in pipe mode\n"
+-	"-p <port> : set port to send to\n"
+ 	"-d        : do not run as a daemon\n"
+ 	"-D        : disable disk statistics gathering\n"
+ 	"-u        : disable user process statistics gathering\n"
+@@ -125,7 +124,7 @@
+ 	DfltSegV = signal(SIGSEGV,SegVhandler);
+ 	if (-1 == chdir("/var/tmp"))
+ 		error("Could not change directory to /var/tmp: %s\n",strerror(errno));
+-	while ((c = getopt(argc, argv, "DdhklmpuvVz")) != -1) {
++	while ((c = getopt(argc, argv, "DdhkluvVz")) != -1) {
+ 		extern int Port;
+ 		extern char *McastAddr;
+ 
+@@ -151,14 +150,6 @@
+ 			Localmode = 1;
+ 			dbug("local mode requested\n");
+ 			break;
+-		case 'm':
+-			McastAddr = optarg;
+-			info("multicast address set to %s\n",McastAddr);
+-			break;
+-		case 'p':
+-			if ((optarg == 0) || (1 != sscanf(optarg,"%u",&Port)))
+-				usage("no port given",EXIT_FAILURE);
+-			break;
+ 		case 'u':
+ 			Userstats = 0;
+ 			dbug("disabling user process statistics lookup");

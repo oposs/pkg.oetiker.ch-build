@@ -1,0 +1,68 @@
+--- sysstat/sysstat.c       2016-11-05 17:39:14.174817794 +0000
++++ sysstat/sysstat.c.fix   2016-11-05 17:45:08.706122995 +0000
+@@ -39,7 +39,7 @@
+ #define PATH_MAX _XOPEN_PATH_MAX
+ #endif
+ 
+-int Fslines = 5, Showzfs = 1, Showdisks = 1, Shownets = 1, Localmode = 0, CPULines = 4;
++int Fslines = 5, Showzfs = 1, Showdisks = 1, Shownets = 1, Localmode = 1, CPULines = 4;
+ extern int Port;
+ extern char *McastAddr;
+ 
+@@ -389,14 +389,10 @@
+ 	"Options:\n"
+ 	"-h        : display this help screen and exit\n"
+ 	"-c        : write stats to stdout instead of using curses\n"
+-	"-d        : start sysstat as daemon, multicasting stats\n"
+ 	"-D        : suppress disk statistics gathering\n"
+ 	"-U        : suppress user statistics gathering\n"
+ 	"-f <num>  : show at least num lines of filesystem information\n"
+ 	"-k        : kill sysstat's daemon\n"
+-	"-l        : start sysstat in local-mode (i.e. without network support)\n"
+-	"-m <addr> : send info to spawndaemon address <addr> (default: 224.0.0.75)\n"
+-	"-p <port> : set spawndaemon port to <port> (default: 7536)\n"
+ 	"-r        : sort user/process summary by rss\n"
+ 	"-s        : sort user/process summary by size\n"
+ 	"-t        : sort user/process summary by %%CPU time\n"
+@@ -445,7 +441,7 @@
+ 	strcpy(Execname,argv[0]);
+ #endif
+ 	dbug("Execname %s\n",Execname);
+-	while ((c = getopt(argc, argv, "cDdf:hklm:p:rstUuvVz")) != -1) {
++	while ((c = getopt(argc, argv, "cDf:hkrstUuvVz")) != -1) {
+ 		switch(c) {
+ 		default:
+ 			assert(0);
+@@ -456,9 +452,6 @@
+ 		case 'D':
+ 			nodiskstat = 1;
+ 			break;
+-		case 'd':
+-			daemon = 1;
+-			break;
+ 		case 'f':
+ 			if ((optarg == 0) || (1 != sscanf(optarg,"%u",&Fslines)))
+ 				usage("",EXIT_FAILURE);
+@@ -469,22 +462,6 @@
+ 		case 'k':
+ 			killdaemon = 1;
+ 			break;
+-		case 'l':
+-			Localmode = 1;
+-			break;
+-		case 'm':
+-			if (optarg == 0)
+-				usage("",EXIT_FAILURE);
+-			McastAddr = optarg;
+-			mcastAddr = argv[optind-1];
+-			info("spawndaemon address set to %s\n",optarg);
+-			break;
+-		case 'p':
+-			if ((optarg == 0) || (1 != sscanf(optarg,"%u",&Port)))
+-				usage("",EXIT_FAILURE);
+-			info("port set to %s\n",Port);
+-			port = argv[optind-1];
+-			break;
+ 		case 'r':
+ 			set_sort_by_rss();
+ 			break;

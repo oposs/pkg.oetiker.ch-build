@@ -1,0 +1,38 @@
+--- sysstat/Makefile        2016-11-05 17:13:47.235580385 +0000
++++ sysstat/Makefile.fix    2016-11-05 17:20:33.381322973 +0000
+@@ -77,25 +77,18 @@
+ 	$(CC) $(D_CFLAGS) $(LDFLAGS) -o $@ $(DOBJS) $(D_LIBS)
+ 
+ install_sysstat: $(CDIR)/sysstat
+-	-$(MKDIR) $(PREFIX)/bin/$(PROC)
+-	$(CP) $(CDIR)/sysstat $(PREFIX)/bin/$(PROC)
+-	-$(CHOWN) root:bin $(PREFIX)/bin/$(PROC)/sysstat
+-	-$(MKDIR) $(PREFIX)/lib
+-	test -x $(ISAEXEC) || $(CP) /usr/lib/isaexec $(ISAEXEC)
+-	$(RM) $(PREFIX)/bin/sysstat
+-	$(LN) $(ISAEXEC) $(PREFIX)/bin/sysstat
+-	-$(MKDIR) $(PREFIX)/share/man/man1m
+-	$(CP) sysstat.1m $(PREFIX)/share/man/man1m
+-	-$(CHOWN) root:bin $(PREFIX)/share/man/man1m/sysstat.1m
+-	-$(CHMOD) 0644 $(PREFIX)/share/man/man1m/sysstat.1m
++	-$(MKDIR) $(DESTDIR)$(PREFIX)/bin/$(KPROC)
++	$(CP) $(CDIR)/sysstat $(DESTDIR)$(PREFIX)/bin/$(KPROC)
++	-$(CHOWN) root:bin $(DESTDIR)$(PREFIX)/bin/$(KPROC)/sysstat
++	-$(MKDIR) $(DESTDIR)$(PREFIX)/share/man/man1m
++	$(CP) sysstat.1m $(DESTDIR)$(PREFIX)/share/man/man1m
++	-$(CHOWN) root:bin $(DESTDIR)$(PREFIX)/share/man/man1m/sysstat.1m
++	-$(CHMOD) 0644 $(DESTDIR)$(PREFIX)/share/man/man1m/sysstat.1m
+ 
+ install_sysstatd: $(DDIR)/sysstatd
+-	-$(MKDIR) $(PREFIX)/sbin/$(KPROC)
+-	$(INSTALL) -f $(PREFIX)/sbin/$(KPROC) -m 04755 -u root -g bin $(DDIR)/sysstatd
+-	$(RM) $(PREFIX)/sbin/sysstatd
+-	-$(MKDIR) $(PREFIX)/lib
+-	test -x $(ISAEXEC) || $(CP) /usr/lib/isaexec $(ISAEXEC)
+-	$(LN) $(ISAEXEC) $(PREFIX)/sbin/sysstatd
++	-$(MKDIR) $(DESTDIR)$(PREFIX)/sbin/$(KPROC)
++	$(CP) $(DDIR)/sysstatd $(DESTDIR)$(PREFIX)/sbin/$(KPROC)
++	-$(CHOWN) root:bin $(DESTDIR)$(PREFIX)/sbin/$(KPROC)/sysstatd
+ 
+ lint:
+ 	lint $(DEFS) $(INCDIRS) $(CSRCS)
