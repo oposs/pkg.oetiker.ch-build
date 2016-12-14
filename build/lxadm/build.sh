@@ -27,11 +27,11 @@
 # Load support functions
 . ../../lib/functions.sh
 
-PROG=lxadm # App name
-VER=0.1.0-rc1    # App version
+PROG=lxadm      # App name
+VER=0.1.0       # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
-PKG=oep/lxadm # Package name (e.g. library/foo)
+PKG=oep/lxadm   # Package name (e.g. library/foo)
 SUMMARY="Manage Illumos LX zones"      # One-liner, must be filled in
 DESC="Manage Illumos LX zones"         # Longer description, must be filled in
 BUILDARCH=32    # or 64 or both ... for libraries we want both for tools 32 bit only
