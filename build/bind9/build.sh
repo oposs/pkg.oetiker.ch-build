@@ -4,8 +4,8 @@
 . ../../lib/functions.sh
 
 PROG=bind9
-VER=9.10.4.4
-VERHUMAN=9.10.4-P4
+VER=9.10.4.5
+VERHUMAN=9.10.4-P5
 PKG=oep/service/network/bind9
 SUMMARY="BIND DNS server and tools"
 DESC="$SUMMARY ($VER)"
