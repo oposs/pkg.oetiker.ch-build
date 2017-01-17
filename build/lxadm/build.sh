@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=lxadm # App name
-VER=0.1.0-rc1    # App version
+VER=0.1.2    # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=oep/lxadm # Package name (e.g. library/foo)
