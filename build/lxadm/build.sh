@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 1995-2013 OETIKER+PARTNER AG  All rights reserved.
+# Copyright 1995-2017 OETIKER+PARTNER AG  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=lxadm      # App name
-VER=0.1.0       # App version
+VER=0.1.2       # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=oep/lxadm   # Package name (e.g. library/foo)
@@ -38,6 +38,7 @@ BUILDARCH=32    # or 64 or both ... for libraries we want both for tools 32 bit 
 BUILDDIR=$PROG
 BUILD_DEPENDS_IPS=
 RUN_DEPENDS_IPS=
+PREFIX=/opt/oep/${PROG}
 
 init
 pushd $TMPDIR
@@ -47,9 +48,16 @@ cd $PROG
 curl -L https://github.com/hadfl/${PROG}/releases/download/v$VER/${PROG}-$VER.tar.gz | gtar zxf -
 cd ${PROG}-$VER
 prep_build
-./configure --prefix=/opt/oep
+./configure --prefix=$PREFIX
 gmake
 gmake install DESTDIR=$DESTDIR
+
+# create symbolic link to standard bin dir
+logcmd mkdir -p $DESTDIR/opt/oep/bin
+logcmd ln -s ${PREFIX}/bin/$PROG $DESTDIR/opt/oep/bin/$PROG
+# create symbolic link to man page
+logcmd mkdir -p $DESTDIR/opt/oep/share/man/man1
+logcmd ln -s ${PREFIX}/share/man/man1/${PROG}.1 $DESTDIR/opt/oep/share/man/man1/${PROG}.1
 
 make_package
 clean_up
