@@ -23,7 +23,7 @@
 # Copyright 1995-2017 OETIKER+PARTNER AG All rights reserved.
 # Use is subject to license terms.
 #
-license COPYRIGHT license=GPLv2
+license COPYING license=GPLv2
 <transform dir path=etc/opt$ -> set group sys>
 <transform file path=lib/svc/method/net-openvpn -> set group bin>
 <transform file path=opt/oep/sbin/openvpn -> set restart_fmri svc:/oep/network/openvpn:*>
