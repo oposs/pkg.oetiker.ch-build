@@ -5,3 +5,4 @@ user username=bind9 group=bind9 gecos-field="Bind User" login-shell=/bin/false h
 <transform file path=var/opt/oep/bind9/named/.* -> set preserve renamenew>
 <transform file path=var/opt/oep/bind9/named/master/.* -> set preserve true>
 <transform file path=var/opt/oep/bind9/named/rev/.* -> set preserve true>
+<transform file path=opt/oep/bind9/(lib|sbin)/ -> set restart_fmri svc:/oep/network/bind9:default>
