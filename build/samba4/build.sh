@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=samba     # App name
-VER=4.4.4      # App version
+VER=4.6.4      # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=oep/service/network/samba4 # Package name (e.g. library/foo)
@@ -93,7 +93,6 @@ applinks_configs() {
 }
 
  
-
 rm -rf $TMPDIR/$PROG-$VER || true
 
 init
@@ -105,6 +104,7 @@ make_isa_stub
 service_configs
 applinks_configs
 make_package
+cd /
 clean_up
 
 # Vim hints

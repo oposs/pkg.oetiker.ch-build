@@ -1,0 +1,25 @@
+--- a/source3/lib/messages_dgm.c.orig	Thu May 25 14:16:11 2017
++++ a/source3/lib/messages_dgm.c	Thu May 25 14:17:10 2017
+@@ -359,9 +359,19 @@
+ 
+ 		msghdr_prep_fds(&msg, buf, fdlen, fds, num_fds);
+ 
+-		do {
+-			ret = sendmsg(sock, &msg, MSG_NOSIGNAL);
+-		} while ((ret == -1) && (errno == EINTR));
++#ifdef MSG_NOSIGNAL
++                do {
++                        ret = sendmsg(sock, &msg, MSG_NOSIGNAL);
++                } while ((ret == -1) && (errno == EINTR));
++#else
++                struct sigaction act, actsave;
++                act.sa_handler = SIG_IGN;
++                sigaction(SIGPIPE, &act, &actsave);
++                do {
++                    ret = sendmsg(sock, &msg, 0);
++                } while ((ret == -1) && (errno == EPIPE));
++                sigaction(SIGPIPE, &actsave, NULL);
++#endif
+ 	}
+ 
+ 	if (ret == -1) {
