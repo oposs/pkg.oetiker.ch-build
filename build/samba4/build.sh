@@ -66,6 +66,7 @@ CONFIGURE_OPTS="
         --with-syslog
 	--with-quotas
         --with-automount
+	--with-shared-modules=vfs_zfsacl
 "
 
 service_configs() {
