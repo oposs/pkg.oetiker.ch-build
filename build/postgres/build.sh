@@ -29,7 +29,7 @@
 . ../../lib/functions.sh
 
 PROG=postgresql
-VER=9.5.3
+VER=9.6.3
 VERHUMAN=$VER
 PKG=oep/database/postgresql
 SUMMARY="$PROG - Open Source Database System"
@@ -44,14 +44,10 @@ CFLAGS="-O3"
 BUILDARCH=64
 
 CONFIGURE_OPTS="--enable-thread-safety
-    --enable-debug
     --with-openssl
     --with-libxml
     --prefix=$PREFIX
     --with-readline"
-
-CONFIGURE_OPTS_32="$CONFIGURE_OPTS_32 --enable-dtrace"
-CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 --enable-dtrace DTRACEFLAGS=\"-64\""
 
 make_prog() {
     logmsg "--- make"
