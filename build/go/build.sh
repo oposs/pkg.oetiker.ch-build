@@ -29,7 +29,7 @@
 . ../../lib/functions.sh
 
 PROG=go
-VER=1.6.2
+VER=1.8.3
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=oep/developer/go
@@ -39,10 +39,15 @@ MIRROR="storage.googleapis.com"
 DLDIR="golang"
 BUILDDIR=$PROG
 
+BUILD_DEPENDS_IPS=oep/developer/go
+
 # Tricks so we can make the installation land in the right place.
-export GOROOT_FINAL=/opt/oep/go
-export GOROOT_BOOTSTRAP=/opt/oep/go
-export GOPATH="$DESTDIR/opt/oep/go"
+export GOROOT_FINAL=$PREFIX/go
+export GOROOT_BOOTSTRAP=$PREFIX/go
+export GOPATH="$DESTDIR/$PREFIX/go"
+
+export LD_LIBRARY_PATH=/opt/gcc-5.1.0/lib/amd64
+export CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 LDFLAGS=-Wl,-L/opt/gcc-5.1.0/lib/amd64,-R/opt/gcc-5.1.0/lib/amd64"
 
 make_clean() {
     cd $TMPDIR/$BUILDDIR/src
@@ -62,7 +67,7 @@ make_install32() {
 }
 
 configure64() {
-    logcmd mkdir -p $DESTDIR/opt/oep || \
+    logcmd mkdir -p $DESTDIR/$PREFIX || \
     logerr "Failed to create Go install directory."
 }
 
@@ -75,12 +80,9 @@ make_prog64() {
 
 make_install64() {
     logmsg "Installing libraries (64)"
-    logcmd mv $TMPDIR/$BUILDDIR $DESTDIR/opt/oep/go || logerr "Failed to install Go"
+    logcmd mv $TMPDIR/$BUILDDIR $DESTDIR$GOROOT_FINAL || logerr "Failed to install Go"
     # For packaging purposes...
-    ln -s $DESTDIR/opt/oep/go $TMPDIR/$BUILDDIR
-    # Required packages:  godoc and vet
-    GOROOT=$DESTDIR/opt/oep/go $DESTDIR/opt/oep/go/bin/go get code.google.com/p/go.tools/cmd/godoc
-    GOROOT=$DESTDIR/opt/oep/go $DESTDIR/opt/oep/go/bin/go get code.google.com/p/go.tools/cmd/vet
+    ln -s $DESTDIR/$PREFIX/go $TMPDIR/$BUILDDIR
 }
 
 init
