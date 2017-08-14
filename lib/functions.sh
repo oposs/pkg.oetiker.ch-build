@@ -212,7 +212,7 @@ process_opts $@
 
 BasicRequirements(){
     local needed=""
-    [[ -x /opt/gcc-4.8.1/bin/gcc ]] || needed+=" developer/gcc48"
+    [[ -x /opt/gcc-5.1.0/bin/gcc ]] || needed+=" developer/gcc51"
     [[ -x /usr/bin/ar ]] || needed+=" developer/object-file"
     [[ -x /usr/bin/ld ]] || needed+=" developer/linker"
     [[ -f /usr/lib/crt1.o ]] || needed+=" developer/library/lint"
