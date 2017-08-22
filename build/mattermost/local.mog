@@ -21,9 +21,9 @@
 #
 # Copyright 2017 OmniOS Community Edition.  All rights reserved.
 # Use is subject to license terms.
-group groupname=mattermost
-user username=mattermost group=mattermost gcos-field="Mattermost User" \
-    home-dir=opt/oep/mattermost password=NP
+group groupname=mattermost gid=85
+user username=mattermost uid=85 group=mattermost gcos-field="Mattermost User" \
+    home-dir=/opt/oep/mattermost password=NP
 <transform file path=etc/opt/oep/mattermost/.+$ -> set preserve renamenew>
 <transform file path=etc/opt/oep/mattermost/.+$ -> set owner mattermost>
 <transform dir  path=etc/opt -> drop>
