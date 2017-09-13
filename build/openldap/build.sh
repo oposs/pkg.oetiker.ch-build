@@ -34,6 +34,7 @@ VERHUMAN=$VER   # Human-readable version
 PKG=oep/library/openldap # Package name (e.g. library/foo)
 SUMMARY="openldap ldap library"      # One-liner, must be filled in
 DESC="an opensource implementation of ldap with library and tools"         # Longer description, must be filled in
+DOWNLOADURL="ftp://mirror.switch.ch/mirror/OpenLDAP/openldap-release/$PROG-$VER.tgz"
 
 BUILDARCH=both
 
@@ -86,7 +87,8 @@ service_configs() {
 
 init
 download_source $PROG $PROG $VER
-patch_source -p0
+#patch_source -p0
+patch_source
 prep_build
 build
 make_isa_stub
