@@ -1,3 +1,4 @@
 Makefile.patch
 sysstat.c.patch
 sysstatd.c.patch
+reset_stdin_flags.patch

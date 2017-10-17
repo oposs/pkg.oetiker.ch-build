@@ -1,0 +1,88 @@
+--- sysstat/sysstat.c	Mon Oct 12 19:30:47 2015
++++ sysstat/sysstat.c	Tue Oct 17 19:04:07 2017
+@@ -40,6 +40,7 @@
+ #endif
+ 
+ int Fslines = 5, Showzfs = 1, Showdisks = 1, Shownets = 1, Localmode = 1, CPULines = 4;
++int stdin_flags;
+ extern int Port;
+ extern char *McastAddr;
+ 
+@@ -309,6 +310,7 @@
+ 				++Current->TS;
+ 			break;
+ 		case 'q':
++			fcntl(STDIN_FILENO, F_SETFL, stdin_flags);
+ 			exit(EXIT_SUCCESS);
+ 			break;
+ 		case 'r':
+@@ -538,7 +540,11 @@
+ 	if (optind < argc) {
+ 		usage("",EXIT_FAILURE);
+ 	}
+-	if (-1 == fcntl(STDIN_FILENO,F_SETFL, O_NONBLOCK))
++	if ((stdin_flags = fcntl(STDIN_FILENO, F_GETFL)) == -1) {
++		error("Cannot get STDIN flags: %s\n", strerror(errno));
++		stdin_flags = 0;
++	}
++	if (-1 == fcntl(STDIN_FILENO,F_SETFL, stdin_flags | O_NONBLOCK))
+ 		error("Cannot set input file to non-blocking: %s\n",strerror(errno));
+ 	if ((Localmode == 0) && (pidf = fopen("/tmp/sysstat.pid","r"))) {
+ 		char pn[] = "/proc/\0\0\0\0\0\0",*p;
+@@ -571,8 +577,10 @@
+ 		ret = system(cmd);
+ 		if (ret == -1) {
+ 			error("could not execute '%s': %s\n",cmd,strerror(errno));
++			fcntl(STDIN_FILENO, F_SETFL, stdin_flags);
+ 			exit(EXIT_FAILURE);
+ 		}
++		fcntl(STDIN_FILENO, F_SETFL, stdin_flags);
+ 		exit(ret == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
+ 
+ 	}
+@@ -608,6 +616,7 @@
+ 		} else if ((dpid = vfork())) {
+ 			if (dpid == -1)
+ 				error("could not fork: %s\n",strerror(errno));
++			fcntl(STDIN_FILENO, F_SETFL, stdin_flags);
+ 			exit(EXIT_SUCCESS);
+ 		} else {
+ 			int i;
+@@ -644,8 +653,10 @@
+ 			execv(bin,args);
+ 			error("could not exec sysstatd: %s\n",strerror(errno));
+ 		} 
+-		if (daemon)
++		if (daemon) {
++			fcntl(STDIN_FILENO, F_SETFL, stdin_flags);
+ 			exit(EXIT_SUCCESS);
++		}
+ 	} else if (Localmode == 0)
+ #ifdef __sun
+ 		printf("sysstat daemon already running: waiting for data...\n");
+--- sysstat/terminal.c	Mon Oct 12 19:30:47 2015
++++ sysstat/terminal.c	Tue Oct 17 19:11:46 2017
+@@ -14,6 +14,7 @@
+ #include <ncurses.h>
+ #endif
+ #include <errno.h>
++#include <fcntl.h>
+ #include <signal.h>
+ #include <stdlib.h>
+ #include <unistd.h>
+@@ -27,6 +27,7 @@
+ static sysstat_t *displayed = 0;
+ static clock_t Dis_ts;
+ extern int Fslines, Showzfs, Showdisks, CPULines, Shownets;
++extern int stdin_flags;
+ 
+ static void
+ exit_curses(void)
+@@ -40,6 +41,7 @@
+ sighandler(int sig)
+ {
+ 	if (sig == SIGINT || sig == SIGTERM) {
++		fcntl(STDIN_FILENO, F_SETFL, stdin_flags);
+ 		exit(EXIT_SUCCESS);
+ 	}
+ 	assert(sig == SIGWINCH);
