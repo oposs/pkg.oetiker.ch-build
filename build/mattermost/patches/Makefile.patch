@@ -6,14 +6,3 @@
  
  # For golang 1.5.x compatibility (remove when we don't want to support it anymore)
  export GO15VENDOREXPERIMENT=1
-@@ -319,6 +319,10 @@
- 	ln -s $(BUILD_ENTERPRISE_DIR) enterprise
- endif
- 
-+build-solaris: .prebuild prepare-enterprise
-+	@echo Build Solaris amd64
-+	env GOOS=solaris GOARCH=amd64 $(GO) install $(GOFLAGS) $(GO_LINKER_FLAGS) ./cmd/platform
-+
- build-linux: .prebuild prepare-enterprise
- 	@echo Build Linux amd64
- 	env GOOS=linux GOARCH=amd64 $(GO) install $(GOFLAGS) $(GO_LINKER_FLAGS) ./cmd/platform

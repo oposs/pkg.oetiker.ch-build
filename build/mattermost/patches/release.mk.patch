@@ -1,0 +1,13 @@
+--- mattermost/build/release.mk	Tue Oct 17 06:25:43 2017
++++ mattermost/build/release.mk	Tue Oct 17 06:27:12 2017
+@@ -1,6 +1,10 @@
+ 
+ dist: | check-style test package
+ 
++build-solaris:
++	@echo Build Solaris amd64
++	env GOOS=solaris GOARCH=amd64 $(GO) install $(GOFLAGS) $(GO_LINKER_FLAGS) ./cmd/platform
++
+ build-linux:
+ 	@echo Build Linux amd64
+ 	env GOOS=linux GOARCH=amd64 $(GO) install $(GOFLAGS) $(GO_LINKER_FLAGS) ./cmd/platform

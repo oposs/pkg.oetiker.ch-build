@@ -28,13 +28,13 @@
 . ../../lib/functions.sh
 
 PROG=mattermost
-VER=4.2.0
+VER=4.3.0
 VERHUMAN=$VER
 PKG=oep/social/mattermost
 SUMMARY="$PROG - All your team communication in one place, instantly searchable and accessible anywhere."
 DESC="$SUMMARY"
 MIRROR=github.com/$PROG
-BUILDDIR=$PROG/src/$MIRROR/platform
+BUILDDIR=$PROG/src/$MIRROR/$PROG-server
 BUILDARCH=64
 
 export GOPATH=$TMPDIR/$PROG
@@ -51,7 +51,7 @@ download_git() {
     cd $TMPDIR/$PROG/src/$MIRROR
     [ -d $TMPDIR/$BUILDDIR ] && rm -rf $TMPDIR/$BUILDDIR
     logmsg "Cloning git repository (tag v$VER)"
-    logcmd git clone --branch v$VER --depth 1 https://$MIRROR/platform.git || logerr "Cannot clone repository"
+    logcmd git clone --branch v$VER --depth 1 https://$MIRROR/$PROG-server.git || logerr "Cannot clone repository"
 }
 
 configure64() {
