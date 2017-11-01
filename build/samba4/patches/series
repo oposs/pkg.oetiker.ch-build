@@ -1,2 +1,3 @@
 zfs-shadow-fix.patch
 MSG_NOSIGNAL.patch
+bug6133-master.patch
