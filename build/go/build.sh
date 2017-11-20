@@ -29,7 +29,7 @@
 . ../../lib/functions.sh
 
 PROG=go
-VER=1.8.3
+VER=1.9.2
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=oep/developer/go
@@ -39,6 +39,7 @@ MIRROR="storage.googleapis.com"
 DLDIR="golang"
 BUILDDIR=$PROG
 
+TAR=gtar
 BUILD_DEPENDS_IPS=oep/developer/go
 
 # Tricks so we can make the installation land in the right place.
@@ -46,8 +47,8 @@ export GOROOT_FINAL=$PREFIX/go
 export GOROOT_BOOTSTRAP=$PREFIX/go
 export GOPATH="$DESTDIR/$PREFIX/go"
 
-export LD_LIBRARY_PATH=/opt/gcc-5.1.0/lib/amd64
-export CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 LDFLAGS=-Wl,-L/opt/gcc-5.1.0/lib/amd64,-R/opt/gcc-5.1.0/lib/amd64"
+export LD_LIBRARY_PATH=/opt/gcc-5/lib/amd64
+export CONFIGURE_OPTS_64="$CONFIGURE_OPTS_64 LDFLAGS=-Wl,-L/opt/gcc-5/lib/amd64,-R/opt/gcc-5/lib/amd64"
 
 make_clean() {
     cd $TMPDIR/$BUILDDIR/src
