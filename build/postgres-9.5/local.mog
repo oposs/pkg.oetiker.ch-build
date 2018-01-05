@@ -1,0 +1,5 @@
+license COPYRIGHT license=postgresql
+group groupname=postgres gid=90
+user username=postgres uid=90 group=postgres gcos-field="PostgreSQL Reserved UID" \
+    home-dir=/var/opt/oep/postgresql password=NP
+<transform file path=opt/oep/pgsql/(lib|bin)/ -> set restart_fmri svc:/oep/database/postgresql:default>
