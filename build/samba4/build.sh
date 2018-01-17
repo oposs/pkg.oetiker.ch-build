@@ -28,9 +28,9 @@
 . ../../lib/functions.sh
 
 PROG=samba     # App name
-VER=4.6.11      # App version
-VERHUMAN=$VER   # Human-readable version
-#PVER=          # Branch (set in config.sh, override here if needed)
+VER=4.6.12     # App version
+VERHUMAN=$VER  # Human-readable version
+#PVER=         # Branch (set in config.sh, override here if needed)
 PKG=oep/service/network/samba4 # Package name (e.g. library/foo)
 SUMMARY="$PROG - CIFS server and domain controller"      # One-liner, must be filled in
 DESC="$SUMMARY ($VER)"         # Longer description, must be filled in
@@ -39,7 +39,7 @@ DOWNLOADURL="http://ftp.samba.org/pub/samba/samba-$VER.tar.gz"
 BUILDARCH=64
 BUILDDIR=$PROG-$VER
 BUILD_DEPENDS_IPS="oep/library/openldap oep/library/security/libgpg-error oep/library/security/libgcrypt"
-RUN_DEPENDS_IPS="oep/library/security/libgpg-error oep/library/security/libgcrypt"
+RUN_DEPENDS_IPS="oep/library/security/libgpg-error oep/library/security/libgcrypt oep/library/openldap"
 
 PREFIX=/opt/oep/samba
 CONFIGURE_OPTS_64="
