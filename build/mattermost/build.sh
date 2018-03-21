@@ -21,14 +21,14 @@
 # CDDL HEADER END
 #
 #
-# Copyright 1995-2017 OETIKER+PARTNER AG  All rights reserved.
+# Copyright 1995-2018 OETIKER+PARTNER AG  All rights reserved.
 # Use is subject to license terms.
 #
 # Load support functions
 . ../../lib/functions.sh
 
 PROG=mattermost
-VER=4.7.3
+VER=4.8.0
 VERHUMAN=$VER
 PKG=oep/social/mattermost
 SUMMARY="$PROG - All your team communication in one place, instantly searchable and accessible anywhere."
@@ -61,7 +61,7 @@ configure64() {
 make_prog64() {
     logmsg "Making $PROG"
     cd $TMPDIR/$BUILDDIR
-    PATH="$PREFIX/go/bin:$GOPATH/bin:$PATH" gmake build-solaris || logerr "Build failed"
+    PATH="$PREFIX/go/bin:$GOPATH/bin:$PATH" gmake build-illumos || logerr "Build failed"
 }
 
 make_install64() {
