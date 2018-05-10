@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=mattermost
-VER=4.9.1
+VER=4.9.2
 VERHUMAN=$VER
 PKG=oep/social/mattermost
 SUMMARY="$PROG - All your team communication in one place, instantly searchable and accessible anywhere."
