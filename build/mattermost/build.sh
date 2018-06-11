@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=mattermost
-VER=4.10.0
+VER=4.10.1
 VERHUMAN=$VER
 PKG=oep/social/mattermost
 SUMMARY="$PROG - All your team communication in one place, instantly searchable and accessible anywhere."
@@ -40,8 +40,10 @@ BUILDARCH=64
 export GOPATH=$TMPDIR/$PROG
 export BUILD_NUMBER=$VER
 
-BUILD_DEPENDS_IPS="developer/versioning/git
-    oep/developer/go"
+BUILD_DEPENDS_IPS="
+    developer/versioning/git
+    ooce/developer/go-110
+"
 
 RUN_DEPENDS_IPS=
 
@@ -61,7 +63,7 @@ configure64() {
 make_prog64() {
     logmsg "Making $PROG"
     cd $TMPDIR/$BUILDDIR
-    PATH="$PREFIX/go/bin:$GOPATH/bin:$PATH" gmake build-illumos || logerr "Build failed"
+    PATH="/opt/ooce/go-1.10/bin:$GOPATH/bin:$PATH" gmake build-illumos || logerr "Build failed"
 }
 
 make_install64() {
