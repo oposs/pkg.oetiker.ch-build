@@ -1,1 +1,4 @@
+<transform dir path=etc/opt$ -> set group sys>
+<transform file path=etc/opt/oep/rsyslog.d/.+$ -> set preserve renamenew>
+<transform file path=etc/opt/oep/rsyslogd.conf$ -> set preserve renamenew>
 license COPYING license=lgpl
