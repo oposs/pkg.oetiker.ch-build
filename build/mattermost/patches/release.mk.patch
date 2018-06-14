@@ -4,9 +4,9 @@
  
  dist: | check-style test package
  
-+build-solaris:
-+	@echo Build Solaris amd64
-+	env GOOS=solaris GOARCH=amd64 $(GO) install $(GOFLAGS) $(GO_LINKER_FLAGS) ./cmd/platform
++build-illumos:
++	@echo Build illumos amd64
++	env GOOS=solaris GOARCH=amd64 $(GO) build -i -o $(GOPATH)/bin/platform $(GOFLAGS) $(GO_LINKER_FLAGS) ./
 +
  build-linux:
  	@echo Build Linux amd64

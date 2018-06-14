@@ -27,7 +27,6 @@ user username=mattermost uid=85 group=mattermost gcos-field="Mattermost User" \
 <transform file path=etc/opt/oep/mattermost/.+$ -> set preserve renamenew>
 <transform file path=etc/opt/oep/mattermost/.+$ -> set owner mattermost>
 <transform dir  path=etc/opt -> drop>
-<transform dir  path=opt/oep/mattermost -> set owner mattermost>
-<transform file path=opt/oep/mattermost -> set owner mattermost>
+<transform dir file path=opt/oep/mattermost -> set owner mattermost>
 <transform file path=opt/oep/mattermost/bin/platform -> set restart_fmri svc:/oep/social/mattermost:default>
 license LICENSE.txt license=MIT

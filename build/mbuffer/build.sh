@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=mbuffer
-VER=20160613
+VER=20171011
 VERHUMAN=$VER
 PKG=oep/system/mbuffer
 SUMMARY="mbuffer - measuring buffer"
@@ -37,7 +37,7 @@ DOWNLOADURL=http://www.maier-komor.de/software/mbuffer/mbuffer-$VER.tgz
 DLDIR=software/$PROG
 BUILDARCH=64
 
-CPPFLAGS64="$CPPFLAGS64 -D_AVL_H"
+CPPFLAGS64="$CPPFLAGS64 -D_AVL_H -DHAVE_LIBGCRYPT=0 -DHAVE_GCRYPT_H=0"
 
 CONFIGURE_OPTS_64="--prefix=$PREFIX
   --includedir=$PREFIX/include
