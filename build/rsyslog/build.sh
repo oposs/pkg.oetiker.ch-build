@@ -68,7 +68,14 @@ service_configs() {
     logmsg "Installing SMF"
     logcmd mkdir -p $DESTDIR/lib/svc/manifest/system
     logcmd cp $SRCDIR/files/rsyslogd.xml \
-        $DESTDIR/lib/svc/manifest/system/rsyslogd.xml
+        $DESTDIR/lib/svc/manifest/oep/system/rsyslogd.xml
+    logmsg "Install Config File"
+    logcmd mkdir -p $DESTDIR/var/spool/rsyslog
+    logcmd mkdir -p $DESTDIR/etc/opt/oep/rsyslog.d
+    logcmd cp $SRCDIR/files/rsyslogd.conf \
+	$DESTDIR/etc/opt/oep/rsyslogd.conf
+    logcmd cp $SRCDIR/files/20-omnios.conf \
+	$DESTDIR/etc/opt/oep/rsyslog.d/20-omnios.conf
 }
 
 
