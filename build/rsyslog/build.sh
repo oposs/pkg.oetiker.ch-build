@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=rsyslog
-VER=8.10.0
+VER=8.35.0
 VERHUMAN=$VER
 PKG=oep/logging/rsyslog
 SUMMARY="RSYSLOG is the rocket-fast system for log processing"
@@ -40,8 +40,8 @@ BUILDARCH=32
 CPPFLAGS64="$CPPFLAGS64 -D_AVL_H"
 CPPFLAGS32="$CPPFLAGS32 -D_AVL_H"
 
-BUILD_DEPENDS_IPS="oep/library/liblogging-stdlog oep/library/libestr oep/library/json-c"
-RUN_DEPENDS_IPS="oep/library/liblogging-stdlog oep/library/libestr oep/library/json-c"
+BUILD_DEPENDS_IPS="oep/library/liblogging-stdlog oep/library/libestr oep/library/fastjson"
+RUN_DEPENDS_IPS="oep/library/liblogging-stdlog oep/library/libestr oep/library/fastjson"
 
 CONFIGURE_OPTS_32="--prefix=$PREFIX
   --includedir=$PREFIX/include
@@ -62,7 +62,7 @@ CONFIGURE_OPTS_64="--prefix=$PREFIX
 
 #DOWNLOADURL=http://mirror.switch.ch/ftp/mirror/gnupg/libgcrypt/${PROG}-${VER}.tar.gz
 
-DOWNLOADURL=http://www.rsyslog.com/files/download/rsyslog/rsyslog-8.10.0.tar.gz
+DOWNLOADURL=http://www.rsyslog.com/files/download/rsyslog/rsyslog-8.35.0.tar.gz
 
 service_configs() {
     logmsg "Installing SMF"
