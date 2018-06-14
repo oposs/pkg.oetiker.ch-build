@@ -66,7 +66,7 @@ DOWNLOADURL=http://www.rsyslog.com/files/download/rsyslog/rsyslog-8.35.0.tar.gz
 
 service_configs() {
     logmsg "Installing SMF"
-    logcmd mkdir -p $DESTDIR/lib/svc/manifest/system
+    logcmd mkdir -p $DESTDIR/lib/svc/manifest/oep/system
     logcmd cp $SRCDIR/files/rsyslogd.xml \
         $DESTDIR/lib/svc/manifest/oep/system/rsyslogd.xml
     logmsg "Install Config File"
