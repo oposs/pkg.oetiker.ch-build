@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=mattermost
-VER=4.10.1
+VER=5.1.0
 VERHUMAN=$VER
 PKG=oep/social/mattermost
 SUMMARY="$PROG - All your team communication in one place, instantly searchable and accessible anywhere."
@@ -76,6 +76,8 @@ make_install64() {
         || logerr "Cannot extract mattermost $VER"
     logcmd cp $TMPDIR/$PROG/bin/platform $DESTDIR/$PREFIX/$PROG/bin \
         || logerr "Cannot copy platform to $DESTDIR"
+    logcmd cp $TMPDIR/$PROG/bin/mattermost $DESTDIR/$PREFIX/$PROG/bin \
+        || logerr "Cannot copy mattermost to $DESTDIR"
     logmsg "Creating config path"
     logcmd mkdir -p $DESTDIR/etc/$PREFIX/$PROG || logerr "Cannot create config path"
     logcmd mv $DESTDIR/$PREFIX/$PROG/config/config.json $DESTDIR/etc/$PREFIX/$PROG \
