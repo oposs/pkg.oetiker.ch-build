@@ -4,7 +4,7 @@
 . ../../lib/functions.sh
 
 PROG=bind9
-VER=9.11.4
+VER=9.11.4-P1
 VERHUMAN=$VER
 PKG=oep/service/network/bind9
 SUMMARY="BIND DNS server and tools"
@@ -61,5 +61,6 @@ build
 make_isa_stub
 basic_named_config
 service_configs
+VER=${VER//-P/.}
 make_package
 clean_up
