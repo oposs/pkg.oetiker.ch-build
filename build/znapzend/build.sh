@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=znapzend # App name
-VER=0.18.0    # App version
+VER=0.19.1    # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=oep/znapzend # Package name (e.g. library/foo)
