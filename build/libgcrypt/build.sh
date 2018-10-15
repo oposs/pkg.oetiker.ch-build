@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=libgcrypt
-VER=1.8.2
+VER=1.8.3
 VERHUMAN=$VER
 PKG=oep/library/security/libgcrypt
 SUMMARY="Libgcrypt is GNU's basic cryptographic library."

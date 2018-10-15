@@ -27,7 +27,7 @@
 . ../../lib/functions.sh
 
 PROG=libgpg-error
-VER=1.27
+VER=1.32
 VERHUMAN=$VER
 PKG=oep/library/security/libgpg-error
 SUMMARY="Libgpg-error is a small library with error codes and descriptions shared by most GnuPG related software."
