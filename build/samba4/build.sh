@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=samba     # App name
-VER=4.9.3      # App version
+VER=4.10.3     # App version
 VERHUMAN=$VER  # Human-readable version
 #PVER=         # Branch (set in config.sh, override here if needed)
 PKG=oep/service/network/samba4 # Package name (e.g. library/foo)
@@ -67,7 +67,7 @@ CONFIGURE_OPTS="
 	--with-quotas
         --with-automount
 	--with-shared-modules=vfs_zfsacl
-	--without-json-audit
+	--without-json
 	--without-libarchive
 "
 

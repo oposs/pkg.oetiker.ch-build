@@ -1,0 +1,18 @@
+--- samba-4.10.3.orig/libcli/dns/wscript_build	Tue May  7 08:38:21 2019
++++ samba-4.10.3/libcli/dns/wscript_build	Fri May 17 13:46:41 2019
+@@ -5,10 +5,10 @@
+         public_deps='LIBTSOCKET tevent-util ndr-standard',
+         private_library=True)
+ 
+-bld.SAMBA_BINARY('resolvconftest',
+-                  source='resolvconftest.c',
+-                  deps='clidns',
+-                  install=False)
++#bld.SAMBA_BINARY('resolvconftest',
++#                  source='resolvconftest.c',
++#                  deps='clidns',
++#                  install=False)
+ 
+ bld.SAMBA_SUBSYSTEM('dns_lookup',
+                     source='dns_lookup.c',
+
