@@ -28,8 +28,8 @@
 #############################################################################
 
 # Default branch
-RELVER=151024
-PVER=0.$RELVER
+RELVER=151030
+PVER=$RELVER.0
 
 # Which server to fetch files from
 MIRROR=mirrors.omniti.com
@@ -61,11 +61,11 @@ NOSCRIPTSTUB=
 #############################################################################
 
 # Perl versions we currently build against
-PERLVERLIST="5.24.1"
+PERLVERLIST="5.28.2"
 
 # Full paths to bins
-PERL32=/usr/perl5/5.24.1/bin/$ISAPART/perl
-PERL64=/usr/perl5/5.24.1/bin/$ISAPART64/perl
+PERL32=/usr/perl5/5.28/bin/$ISAPART/perl
+PERL64=/usr/perl5/5.28/bin/$ISAPART64/perl
 
 # Default Makefile.PL options
 PERL_MAKEFILE_OPTS="INSTALLSITEBIN=$PREFIX/bin/_ARCHBIN_ \
@@ -112,7 +112,7 @@ if [ "$MJOBS" == "0" ]; then
     MJOBS=2
 fi
 MAKE_JOBS="-j $MJOBS"
-NO_PARALLEL_MAKE=
+NO_PARALLEL_MAKE=yes
 
 # Remove install or packaging files by default. You can set this in a build
 # script when testing to speed up building a package
@@ -139,11 +139,11 @@ CFLAGS32=""
 CFLAGS64="-m64"
 
 # Linker flags
-LDFLAGS32="-L/opt/oep/lib -R/opt/oep/lib -L/opt/omni/lib -R/opt/omni/lib"
-LDFLAGS64="-m64 -L/opt/oep/lib/$ISAPART64 -R/opt/oep/lib/$ISAPART64  -L/opt/omni/lib/$ISAPART64 -R/opt/omni/lib/$ISAPART64"
+LDFLAGS32="-L/opt/oep/lib -R/opt/oep/lib"
+LDFLAGS64="-m64 -L/opt/oep/lib/$ISAPART64 -R/opt/oep/lib/$ISAPART64"
 
 # C pre-processor flags
-CPPFLAGS="-I/opt/oep/include -I/opt/omni/include"
+CPPFLAGS="-I/opt/oep/include"
 CPPFLAGS32=""
 CPPFLAGS64=""
 

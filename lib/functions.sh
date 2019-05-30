@@ -188,7 +188,7 @@ url_encode() {
 LANG=C
 export LANG
 # Set the path - This can be overriden/extended in the build script
-PATH="/opt/gcc-5/bin:/opt/oep/bin:/opt/omni/bin:/usr/ccs/bin:/usr/bin:/usr/sbin:/usr/gnu/bin:/usr/sfw/bin"
+PATH="/opt/gcc-8/bin:/opt/oep/bin:/usr/ccs/bin:/usr/bin:/usr/sbin:/usr/gnu/bin:/usr/sfw/bin"
 export PATH
 # The dir where this file is located - used for sourcing further files
 MYDIR=$PWD/`dirname $BASH_SOURCE[0]`

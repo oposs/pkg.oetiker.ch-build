@@ -1,0 +1,175 @@
+diff -wru samba-4.10.3.orig/ctdb/tests/src/test_mutex_raw.c samba-4.10.3/ctdb/tests/src/test_mutex_raw.c
+--- samba-4.10.3.orig/ctdb/tests/src/test_mutex_raw.c	2019-01-15 10:07:00.000000000 +0000
++++ samba-4.10.3/ctdb/tests/src/test_mutex_raw.c	2019-05-28 17:05:53.087753529 +0000
+@@ -335,7 +335,7 @@
+ 				"FAIL: pthread_mutexattr_setrobust failed\n");
+ 			exit(EXIT_FAILURE);
+ 		}
+-
++		bzero(mutex, sizeof(pthread_mutex_t));
+ 		ret = pthread_mutex_init(mutex, &mattr);
+ 		if (ret != 0) {
+ 			fprintf(stderr, "FAIL: pthread_mutex_init failed\n");
+diff -wru samba-4.10.3.orig/lib/pthreadpool/pthreadpool.c samba-4.10.3/lib/pthreadpool/pthreadpool.c
+--- samba-4.10.3.orig/lib/pthreadpool/pthreadpool.c	2019-01-15 10:07:00.000000000 +0000
++++ samba-4.10.3/lib/pthreadpool/pthreadpool.c	2019-05-28 17:15:08.646814088 +0000
+@@ -153,6 +153,7 @@
+ 
+ 	pool->head = pool->num_jobs = 0;
+ 
++	bzero(&pool->mutex, sizeof(pthread_mutex_t));
+ 	ret = pthread_mutex_init(&pool->mutex, NULL);
+ 	if (ret != 0) {
+ 		free(pool->jobs);
+@@ -168,6 +169,7 @@
+ 		return ret;
+ 	}
+ 
++	bzero(&pool->fork_mutex, sizeof(pthread_mutex_t));	
+ 	ret = pthread_mutex_init(&pool->fork_mutex, NULL);
+ 	if (ret != 0) {
+ 		pthread_cond_destroy(&pool->condvar);
+diff -wru samba-4.10.3.orig/lib/tdb/common/mutex.c samba-4.10.3/lib/tdb/common/mutex.c
+--- samba-4.10.3.orig/lib/tdb/common/mutex.c	2019-01-15 10:07:00.000000000 +0000
++++ samba-4.10.3/lib/tdb/common/mutex.c	2019-05-28 17:00:59.405957595 +0000
+@@ -586,7 +586,7 @@
+ 
+ 	for (i=0; i<tdb->hash_size+1; i++) {
+ 		pthread_mutex_t *chain = &m->hashchains[i];
+-
++                bzero(chain, sizeof(pthread_mutex_t));
+ 		ret = pthread_mutex_init(chain, &ma);
+ 		if (ret != 0) {
+ 			goto fail;
+@@ -595,6 +595,7 @@
+ 
+ 	m->allrecord_lock = F_UNLCK;
+ 
++	bzero(&m->allrecord_mutex, sizeof(pthread_mutex_t));
+ 	ret = pthread_mutex_init(&m->allrecord_mutex, &ma);
+ 	if (ret != 0) {
+ 		goto fail;
+@@ -688,6 +689,7 @@
+ 	if (ret != 0) {
+ 		goto cleanup_ma;
+ 	}
++	bzero(&m, sizeof(pthread_mutex_t));
+ 	ret = pthread_mutex_init(&m, &ma);
+ 	if (ret != 0) {
+ 		goto cleanup_ma;
+@@ -885,6 +887,7 @@
+ 	if (ret != 0) {
+ 		goto cleanup;
+ 	}
++	bzero(ptr, sizeof(pthread_mutex_t));
+ 	ret = pthread_mutex_init(ptr, &ma);
+ 	if (ret != 0) {
+ 		goto cleanup;
+diff -wru samba-4.10.3.orig/lib/tevent/tevent_threads.c samba-4.10.3/lib/tevent/tevent_threads.c
+--- samba-4.10.3.orig/lib/tevent/tevent_threads.c	2019-01-15 10:07:00.000000000 +0000
++++ samba-4.10.3/lib/tevent/tevent_threads.c	2019-05-28 17:16:45.424722823 +0000
+@@ -234,6 +234,7 @@
+ 		return NULL;
+ 	}
+ 
++	bzero(&tp->mutex, sizeof(pthread_mutex_t));
+ 	ret = pthread_mutex_init(&tp->mutex, NULL);
+ 	if (ret != 0) {
+ 		goto fail;
+@@ -439,6 +440,7 @@
+ 	}
+ 	tctx->event_ctx = ev;
+ 
++	bzero(&tctx->event_ctx_mutex, sizeof(pthread_mutex_t));
+ 	ret = pthread_mutex_init(&tctx->event_ctx_mutex, NULL);
+ 	if (ret != 0) {
+ 		TALLOC_FREE(tctx);
+diff -wru samba-4.10.3.orig/lib/tevent/tevent.c samba-4.10.3/lib/tevent/tevent.c
+--- samba-4.10.3.orig/lib/tevent/tevent.c	2019-01-15 10:07:00.000000000 +0000
++++ samba-4.10.3/lib/tevent/tevent.c	2019-05-28 17:17:31.641065167 +0000
+@@ -423,6 +423,7 @@
+ 		return ret;
+ 	}
+ 
++	bzero(&ev->scheduled_mutex, sizeof(pthread_mutex_t));
+ 	ret = pthread_mutex_init(&ev->scheduled_mutex, NULL);
+ 	if (ret != 0) {
+ 		return ret;
+diff -wru samba-4.10.3.orig/lib/util/smb_threads.h samba-4.10.3/lib/util/smb_threads.h
+--- samba-4.10.3.orig/lib/util/smb_threads.h	2019-01-15 10:07:00.000000000 +0000
++++ samba-4.10.3/lib/util/smb_threads.h	2019-05-28 17:12:21.944882004 +0000
+@@ -66,6 +66,7 @@
+ 	if (!pmut) { \
+ 		return ENOMEM; \
+ 	} \
++	bzero(pmut, sizeof(pthread_mutex_t)); \
+ 	pthread_mutex_init(pmut, NULL); \
+ 	*pplock = (void *)pmut; \
+ 	return 0; \
+diff -wru samba-4.10.3.orig/lib/util/tfork.c samba-4.10.3/lib/util/tfork.c
+--- samba-4.10.3.orig/lib/util/tfork.c	2019-01-15 10:07:00.000000000 +0000
++++ samba-4.10.3/lib/util/tfork.c	2019-05-28 17:13:13.434728105 +0000
+@@ -281,6 +281,7 @@
+ 	ret = pthread_key_create(&tfork_global_key, tfork_global_destructor);
+ 	assert(ret == 0);
+ 
++	bzero(&signal_state.mutex, sizeof(pthread_mutex_t));
+ 	ret = pthread_mutex_init(&signal_state.mutex, NULL);
+ 	assert(ret == 0);
+ 
+diff -wru samba-4.10.3.orig/nsswitch/stress-nss-libwbclient.c samba-4.10.3/nsswitch/stress-nss-libwbclient.c
+--- samba-4.10.3.orig/nsswitch/stress-nss-libwbclient.c	2019-01-15 10:07:00.000000000 +0000
++++ samba-4.10.3/nsswitch/stress-nss-libwbclient.c	2019-05-28 17:08:38.610729907 +0000
+@@ -118,6 +118,7 @@
+ 
+ 	state.username = argv[1];
+ 	state.timeout = time(NULL) + RUNTIME;
++	bzero(&state.lock, sizeof(pthread_mutex_t));
+ 	rc = pthread_mutex_init(&state.lock, NULL);
+ 	if (rc != 0) {
+ 		fprintf(stderr,
+diff -wru samba-4.10.3.orig/source3/libsmb/pylibsmb.c samba-4.10.3/source3/libsmb/pylibsmb.c
+--- samba-4.10.3.orig/source3/libsmb/pylibsmb.c	2019-05-07 08:38:21.000000000 +0000
++++ samba-4.10.3/source3/libsmb/pylibsmb.c	2019-05-28 17:20:08.278842032 +0000
+@@ -285,6 +285,7 @@
+ {
+ 	int ret, result;
+ 
++	bzero(&cond->mutex, sizeof(pthread_mutex_t));
+ 	result = pthread_mutex_init(&cond->mutex, NULL);
+ 	if (result != 0) {
+ 		goto fail;
+diff -wru samba-4.10.3.orig/source3/smbd/process.c samba-4.10.3/source3/smbd/process.c
+--- samba-4.10.3.orig/source3/smbd/process.c	2019-01-15 10:07:00.000000000 +0000
++++ samba-4.10.3/source3/smbd/process.c	2019-05-28 17:18:47.349549205 +0000
+@@ -3369,6 +3369,7 @@
+ 			pthread_mutexattr_destroy(&a);
+ 			goto fail;
+ 		}
++		bzero(xconn->smb1.echo_handler.socket_mutex, sizeof(pthread_mutex_t));
+ 		res = pthread_mutex_init(xconn->smb1.echo_handler.socket_mutex,
+ 					 &a);
+ 		pthread_mutexattr_destroy(&a);
+diff -wru samba-4.10.3.orig/source4/heimdal/include/heim_threads.h samba-4.10.3/source4/heimdal/include/heim_threads.h
+--- samba-4.10.3.orig/source4/heimdal/include/heim_threads.h	2019-01-15 10:07:00.000000000 +0000
++++ samba-4.10.3/source4/heimdal/include/heim_threads.h	2019-05-28 17:25:28.248521073 +0000
+@@ -87,7 +87,7 @@
+ 
+ #define HEIMDAL_MUTEX pthread_mutex_t
+ #define HEIMDAL_MUTEX_INITIALIZER PTHREAD_MUTEX_INITIALIZER
+-#define HEIMDAL_MUTEX_init(m) pthread_mutex_init(m, NULL)
++#define HEIMDAL_MUTEX_init(m) bzero(m, sizeof(pthread_mutex_t));pthread_mutex_init(m, NULL)
+ #define HEIMDAL_MUTEX_lock(m) pthread_mutex_lock(m)
+ #define HEIMDAL_MUTEX_unlock(m) pthread_mutex_unlock(m)
+ #define HEIMDAL_MUTEX_destroy(m) pthread_mutex_destroy(m)
+diff -wru samba-4.10.3.orig/third_party/socket_wrapper/socket_wrapper.c samba-4.10.3/third_party/socket_wrapper/socket_wrapper.c
+--- samba-4.10.3.orig/third_party/socket_wrapper/socket_wrapper.c	2019-01-15 10:07:01.000000000 +0000
++++ samba-4.10.3/third_party/socket_wrapper/socket_wrapper.c	2019-05-28 17:10:30.590392346 +0000
+@@ -1339,6 +1339,7 @@
+ 		goto done;
+ 	}
+ 
++	bzero(m, sizeof(pthread_mutex_t));
+ 	ret = pthread_mutex_init(m, &ma);
+ 
+ done:
