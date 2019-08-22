@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=openldap   # App name
-VER=2.4.46      # App version
+VER=2.4.48      # App version
 VERHUMAN=$VER   # Human-readable version
 #PVER=          # Branch (set in config.sh, override here if needed)
 PKG=oep/library/openldap # Package name (e.g. library/foo)
