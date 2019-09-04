@@ -158,7 +158,7 @@ diff -wru samba-4.10.3.orig/source4/heimdal/include/heim_threads.h samba-4.10.3/
  #define HEIMDAL_MUTEX pthread_mutex_t
  #define HEIMDAL_MUTEX_INITIALIZER PTHREAD_MUTEX_INITIALIZER
 -#define HEIMDAL_MUTEX_init(m) pthread_mutex_init(m, NULL)
-+#define HEIMDAL_MUTEX_init(m) bzero(m, sizeof(pthread_mutex_t));pthread_mutex_init(m, NULL)
++#define HEIMDAL_MUTEX_init(m) do { bzero(m, sizeof(pthread_mutex_t));pthread_mutex_init(m, NULL)} while(0)
  #define HEIMDAL_MUTEX_lock(m) pthread_mutex_lock(m)
  #define HEIMDAL_MUTEX_unlock(m) pthread_mutex_unlock(m)
  #define HEIMDAL_MUTEX_destroy(m) pthread_mutex_destroy(m)
