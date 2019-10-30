@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=samba     # App name
-VER=4.10.8     # App version
+VER=4.11.2     # App version
 VERHUMAN=$VER  # Human-readable version
 #PVER=         # Branch (set in config.sh, override here if needed)
 PKG=oep/service/network/samba4 # Package name (e.g. library/foo)
@@ -38,8 +38,8 @@ DOWNLOADURL="http://ftp.samba.org/pub/samba/samba-$VER.tar.gz"
 #BUILDARCH=both (64 keeps crashing)
 BUILDARCH=64
 BUILDDIR=$PROG-$VER
-BUILD_DEPENDS_IPS="oep/library/openldap oep/library/security/libgpg-error oep/library/security/libgcrypt"
-RUN_DEPENDS_IPS="oep/library/security/libgpg-error oep/library/security/libgcrypt oep/library/openldap"
+BUILD_DEPENDS_IPS="oep/library/security/gnutls oep/library/openldap oep/library/security/libgpg-error oep/library/security/libgcrypt"
+RUN_DEPENDS_IPS="oep/library/security/gnutls oep/library/security/libgpg-error oep/library/security/libgcrypt oep/library/openldap"
 
 PREFIX=/opt/oep/samba
 CONFIGURE_OPTS_64="

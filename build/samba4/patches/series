@@ -11,10 +11,9 @@ patch-nsswitch_winbind__nss__netbsd.c
 patch-nsswitch_wscript__build
 patch-source4_dsdb_samdb_ldb__modules_wscript__build__server
 patch-source4_heimdal__build_roken.h
-patch-source4_heimdal__build_wscript__configure
 patch-source4_scripting_wsript_build
+patch-source4_utils_oLschema2ldif_wscript_build
 ARRAY_SIZE
 sendfile
 libnsl
-fmemopen
 pthread_mutex_init

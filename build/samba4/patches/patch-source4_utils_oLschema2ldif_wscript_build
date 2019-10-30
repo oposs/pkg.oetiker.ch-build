@@ -1,0 +1,10 @@
+--- samba-4.11.2/source4/utils/oLschema2ldif/wscript_build.orig 2019-10-30 14:21:46.880233101 +0000
++++ samba-4.11.2/source4/utils/oLschema2ldif/wscript_build      2019-10-30 14:21:56.088101818 +0000
+@@ -13,6 +13,7 @@
+ 
+ bld.SAMBA_BINARY('test_oLschema2ldif',
+ 	source='test.c',
++	enabled=bld.CONFIG_SET('HAVE_FMEMOPEN'),
+ 	deps='cmocka oLschema2ldif-lib',
+ 	local_include=False,
+ 	install=False,
