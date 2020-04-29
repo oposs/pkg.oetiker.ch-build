@@ -1,5 +1,5 @@
---- samba-4.10.3.orig/lib/replace/wscript       Tue Jan 15 10:07:00 2019
-+++ samba-4.10.3/lib/replace/wscript    Fri May 17 12:45:55 2019
+--- samba-4.11.8/lib/replace/wscript.orig       Wed Apr 29 07:12:54 2020
++++ samba-4.11.8/lib/replace/wscript    Wed Apr 29 07:17:35 2020
 @@ -96,14 +96,6 @@
  
      conf.SET_TARGET_TYPE('nsl', 'EMPTY')
@@ -15,13 +15,13 @@
      conf.CHECK_HEADERS('rpcsvc/nis.h rpcsvc/ypclnt.h', lib='tirpc nsl')
  
      conf.CHECK_HEADERS('sys/sysctl.h')
-@@ -192,9 +184,12 @@
- 
-     conf.CHECK_FUNCS_IN('''inet_ntoa inet_aton inet_ntop inet_pton connect gethostbyname
-                            getaddrinfo getnameinfo freeaddrinfo gai_strerror socketpair''',
--                        'socket nsl', checklibc=True,
-+                        'socket nsl', checklibc=True, empty_decl=False,
-                         headers='sys/socket.h netinet/in.h arpa/inet.h netdb.h')
+@@ -217,9 +209,13 @@
+                             gai_strerror
+                             socketpair''',
+                             'socket nsl',
++                            empty_decl=False,
+                             headers='sys/socket.h netinet/in.h arpa/inet.h netdb.h')
+         conf.DEFINE('REPLACE_REQUIRES_LIBSOCKET_LIBNSL', 1)
  
 +    if not conf.CONFIG_SET('HAVE_RPCSVC_YP_PROT_H'):
 +       conf.CHECK_HEADERS('rpc/rpc.h rpcsvc/yp_prot.h', lib='tirpc nsl')

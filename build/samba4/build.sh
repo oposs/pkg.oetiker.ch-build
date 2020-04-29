@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=samba     # App name
-VER=4.11.5     # App version
+VER=4.11.8     # App version
 VERHUMAN=$VER  # Human-readable version
 #PVER=         # Branch (set in config.sh, override here if needed)
 PKG=oep/service/network/samba4 # Package name (e.g. library/foo)
@@ -40,7 +40,7 @@ BUILDARCH=64
 BUILDDIR=$PROG-$VER
 BUILD_DEPENDS_IPS="oep/library/security/gnutls oep/library/openldap oep/library/security/libgpg-error oep/library/security/libgcrypt"
 RUN_DEPENDS_IPS="oep/library/security/gnutls oep/library/security/libgpg-error oep/library/security/libgcrypt oep/library/openldap"
-
+PATH=/usr/perl5/5.30/bin:$PATH
 PREFIX=/opt/oep/samba
 CONFIGURE_OPTS_64="
         --prefix=$PREFIX

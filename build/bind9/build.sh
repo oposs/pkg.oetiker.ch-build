@@ -4,7 +4,7 @@
 . ../../lib/functions.sh
 
 PROG=bind9
-VER=9.11.5-P4
+VER=9.11.13
 VERHUMAN=$VER
 PKG=oep/service/network/bind9
 SUMMARY="BIND DNS server and tools"
