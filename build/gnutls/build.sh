@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=gnutls    # App name
-VER=3.6.10     # App version
+VER=3.6.15     # App version
 VERHUMAN=$VER  # Human-readable version
 #PVER=         # Branch (set in config.sh, override here if needed)
 PKG=oep/library/security/gnutls # Package name (e.g. library/foo)
