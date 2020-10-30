@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=liblogging
-VER=1.0.5
+VER=1.0.6
 VERHUMAN=$VER
 PKG=oep/library/liblogging-stdlog
 SUMMARY="An easy to use and lightweight signal-safe logging library"
@@ -46,18 +46,20 @@ CONFIGURE_OPTS_32="--prefix=$PREFIX
   --sbindir=$PREFIX/sbin/$ISAPART
   --libdir=$PREFIX/lib
   --libexecdir=$PREFIX/libexec
-  --enable-journal=no"
+  --enable-journal=no
+  --disable-man-pages"
 
 CONFIGURE_OPTS_64="--prefix=$PREFIX
   --includedir=$PREFIX/include
   --bindir=$PREFIX/bin/$ISAPART64
   --sbindir=$PREFIX/sbin/$ISAPART64
   --libdir=$PREFIX/lib/$ISAPART64
-  --libexecdir=$PREFIX/libexec/$ISAPART64"
+  --libexecdir=$PREFIX/libexec/$ISAPART64
+  --disable-man-pages"
 
 
 
-DOWNLOADURL=http://download.rsyslog.com/liblogging/liblogging-1.0.5.tar.gz
+DOWNLOADURL=http://download.rsyslog.com/liblogging/liblogging-1.0.6.tar.gz
 
 
 init
