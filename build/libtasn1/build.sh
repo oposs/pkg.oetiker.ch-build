@@ -28,7 +28,7 @@
 . ../../lib/functions.sh
 
 PROG=libtasn1    # App name
-VER=4.14     # App version
+VER=4.16.0     # App version
 VERHUMAN=$VER  # Human-readable version
 #PVER=         # Branch (set in config.sh, override here if needed)
 PKG=oep/library/security/libtasn1 # Package name (e.g. library/foo)
