@@ -1,0 +1,13 @@
+--- a/lib/replace/replace.h       2019-05-17 08:01:26.476234979 +0000
++++ b/lib/replace/replace.h       2019-05-17 08:01:38.377899845 +0000
+@@ -833,8 +833,9 @@
+ /**
+  * Work out how many elements there are in a static array.
+  */
++#ifndef ARRAY_SIZE
+ #define ARRAY_SIZE(a) (sizeof(a)/sizeof(a[0]))
+-
++#endif
+ /**
+  * Pointer difference macro
+  */

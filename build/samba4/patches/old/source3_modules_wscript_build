@@ -1,0 +1,23 @@
+--- samba-4.15.2/source3/modules/wscript_build.orig	Tue Dec  7 14:02:16 2021
++++ samba-4.15.2/source3/modules/wscript_build	Tue Dec  7 14:02:31 2021
+@@ -240,13 +240,13 @@
+                  internal_module=bld.SAMBA3_IS_STATIC_MODULE('vfs_aixacl2'),
+                  enabled=bld.SAMBA3_IS_ENABLED_MODULE('vfs_aixacl2'))
+ 
+-bld.SAMBA3_MODULE('vfs_solarisacl',
+-                 subsystem='vfs',
+-                 source='vfs_solarisacl.c',
+-                 init_function='',
+-                 deps='sec',
+-                 internal_module=bld.SAMBA3_IS_STATIC_MODULE('vfs_solarisacl'),
+-                 enabled=bld.SAMBA3_IS_ENABLED_MODULE('vfs_solarisacl'))
++#bld.SAMBA3_MODULE('vfs_solarisacl',
++#                 subsystem='vfs',
++#                 source='vfs_solarisacl.c',
++#                 init_function='',
++#                 deps='sec',
++#                 internal_module=bld.SAMBA3_IS_STATIC_MODULE('vfs_solarisacl'),
++#                 enabled=bld.SAMBA3_IS_ENABLED_MODULE('vfs_solarisacl'))
+ 
+ bld.SAMBA3_MODULE('vfs_zfsacl',
+                  subsystem='vfs',

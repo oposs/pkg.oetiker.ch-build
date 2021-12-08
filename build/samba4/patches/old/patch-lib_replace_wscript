@@ -2,8 +2,8 @@ $NetBSD: patch-lib_replace_wscript,v 1.2 2019/03/20 19:09:10 adam Exp $
 
 Skip epoll tests on SunOS, implementation is Linux-specific.
 
---- lib/replace/wscript.orig	2019-01-15 10:07:00.000000000 +0000
-+++ lib/replace/wscript
+--- a/lib/replace/wscript.orig	2019-01-15 10:07:00.000000000 +0000
++++ b/lib/replace/wscript
 @@ -424,7 +424,9 @@ def configure(conf):
      conf.CHECK_FUNCS('gai_strerror get_current_dir_name')
      conf.CHECK_FUNCS('timegm getifaddrs freeifaddrs mmap setgroups syscall setsid')

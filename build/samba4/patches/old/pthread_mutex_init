@@ -1,0 +1,10 @@
+--- samba-4.15.2/third_party/socket_wrapper/socket_wrapper.c.orig	Tue Dec  7 08:31:37 2021
++++ samba-4.15.2/third_party/socket_wrapper/socket_wrapper.c	Tue Dec  7 09:03:45 2021
+@@ -1620,6 +1620,7 @@
+ 	__CHECK(pthread_mutexattr_init(&ma));
+ 	need_destroy = true;
+ 	__CHECK(pthread_mutexattr_settype(&ma, PTHREAD_MUTEX_ERRORCHECK));
++	bzero(m, sizeof(pthread_mutex_t));
+ 	__CHECK(pthread_mutex_init(m, &ma));
+ done:
+ 	if (need_destroy) {

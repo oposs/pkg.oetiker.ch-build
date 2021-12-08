@@ -1,0 +1,18 @@
+--- samba-4.15.2/source4/dsdb/samdb/ldb_modules/wscript_build_server.orig	Tue Dec  7 08:31:30 2021
++++ samba-4.15.2/source4/dsdb/samdb/ldb_modules/wscript_build_server	Tue Dec  7 12:58:48 2021
+@@ -54,6 +54,7 @@
+                      -Wl,--wrap,json_add_version
+                      -Wl,--wrap,json_add_timestamp
+                  ''',
++                 enabled=bld.env['HAVE_LDWRAP'],
+                  for_selftest=True)
+ 
+ bld.SAMBA_BINARY('test_group_audit',
+@@ -68,6 +69,7 @@
+                  DSDB_MODULE_HELPERS
+                  DSDB_MODULE_HELPERS_AUDIT
+                  ''',
++                 enabled=bld.env['HAVE_LDWRAP'],
+                  for_selftest=True)
+ 
+ bld.SAMBA_BINARY('test_group_audit_errors',

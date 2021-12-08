@@ -1,0 +1,22 @@
+--- samba-4.11.2/source4/utils/oLschema2ldif/test.c.orig        2019-10-30 14:03:29.408837311 +0000
++++ samba-4.11.2/source4/utils/oLschema2ldif/test.c     2019-10-30 14:04:16.066075399 +0000
+@@ -50,6 +50,19 @@
+        return 0;
+ }
+ 
++static FILE *fmemopen(const void *buf, size_t len, const char *mode)
++{
++    FILE *fp;
++    char *fname = xstrdup("/tmp/samba-cunit-fmemopenXXXXXX");
++    int fd = mkstemp(fname);
++    retry_write(fd, buf, len);
++    close(fd);
++    fp = fopen(fname, mode);
++    unlink(fname);
++    free(fname);
++    return fp;
++}                 
++
+ static struct schema_conv process_data_blob(void **state, DATA_BLOB input)
+ {
+        struct test_ctx *test_ctx =

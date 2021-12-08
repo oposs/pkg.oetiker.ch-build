@@ -1,0 +1,32 @@
+--- a/source3/wscript   Fri May 17 08:07:10 2019
++++ b/source3/wscript   Fri May 17 08:07:22 2019
+@@ -1336,7 +1336,7 @@
+         elif (host_os.rfind('sunos') > -1):
+             conf.CHECK_FUNCS_IN('sendfilev', 'sendfile')
+             conf.CHECK_CODE('''
+-                            #include <sys/sendfile.h>,
++                            #include <sys/sendfile.h>
+                             int sfvcnt;
+                             size_t xferred;
+                             struct sendfilevec vec[2];
+--- a/source4/dsdb/samdb/ldb_modules/wscript_build      Fri May 17 09:15:03 2019
++++ b/source4/dsdb/samdb/ldb_modules/wscript_build      Fri May 17 09:15:27 2019
+@@ -24,6 +24,7 @@
+         deps='''
+             talloc
+             samdb
++            sendfile
+             cmocka
+             DSDB_MODULE_HELPERS
+         ''',
+
+--- samba-4.10.3.orig/source3/wscript_build      Tue May  7 08:38:21 2019
++++ samba-4.10.3/source3/wscript_build   Fri May 17 13:12:24 2019
+@@ -594,6 +594,7 @@
+                         REG_SMBCONF
+                         SAMBA_VERSION
+                         cap
++                        sendfile
+                         charset
+                         cli_smb_common
+                         errors3

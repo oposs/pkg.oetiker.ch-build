@@ -1,5 +1,5 @@
---- lib/replace/wscript.orig       Wed Apr 29 07:12:54 2020
-+++ lib/replace/wscript    Wed Apr 29 07:17:35 2020
+--- samba-4.11.8/lib/replace/wscript.orig       Wed Apr 29 07:12:54 2020
++++ samba-4.11.8/lib/replace/wscript    Wed Apr 29 07:17:35 2020
 @@ -96,14 +96,6 @@
  
      conf.SET_TARGET_TYPE('nsl', 'EMPTY')
